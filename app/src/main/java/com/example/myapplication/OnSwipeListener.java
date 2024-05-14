@@ -19,8 +19,8 @@ public class OnSwipeListener implements View.OnTouchListener {
     }
 
     private final class GestureListener extends GestureDetector.SimpleOnGestureListener{
-        public static final int SWIPE_THRESOLD = 100;
-        public static final int SWIPE_VELOCITY_THRESHOLD = 100;
+        public static final int SWIPE_THRESOLD = 50;
+        public static final int SWIPE_VELOCITY_THRESHOLD = 50;
 
         public boolean onDown(MotionEvent e){
             return true;
@@ -34,10 +34,10 @@ public class OnSwipeListener implements View.OnTouchListener {
             if(Math.abs(xDiff)>Math.abs(yDiff)){
                 if(Math.abs(xDiff)>SWIPE_THRESOLD&&Math.abs(velocityX)>SWIPE_VELOCITY_THRESHOLD){
                     if(xDiff>0){
-                        onSipwRight();
+                        onSwipeRight();
                     }else
                     {
-                        onSipwLeft();
+                        onSwipeLeft();
                     }
                     result = true;
                 }
@@ -45,9 +45,9 @@ public class OnSwipeListener implements View.OnTouchListener {
             }
             else if(Math.abs(yDiff)>SWIPE_THRESOLD&&Math.abs(velocityY)>SWIPE_VELOCITY_THRESHOLD) {
                 if (yDiff > 0) {
-                    onSipwBottom();
+                    onSwipeBottom();
                 } else {
-                    onSipwTop();
+                    onSwipeTop();
                 }
                 result = true;
             }
@@ -55,9 +55,9 @@ public class OnSwipeListener implements View.OnTouchListener {
         }
     }
 
-    void onSipwLeft(){}
-    void onSipwRight(){}
-    void onSipwTop(){}
-    void onSipwBottom(){}
+    void onSwipeLeft(){}
+    void onSwipeRight(){}
+    void onSwipeTop(){}
+    void onSwipeBottom(){}
 
 }

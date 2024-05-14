@@ -31,12 +31,14 @@ public class MainActivity extends AppCompatActivity {
             R.drawable.yellow,
     };
 
+    int maxNumOfMoves = 50;
+    int currNumOfMoves = 0;
     int widthOfBlock, noOfBlocks = 5, widthOfScreen, heightofScreen;
     ArrayList<ImageView> tile = new ArrayList<>();
     int tileToBeDraged, tileToBeReplaced;
     int notTile = R.drawable.ic_launcher_background;
     Handler mHandler;
-    int interval = 20;
+    int interval = 300;
     TextView scoreRes;
     int score = 0;
 
@@ -55,37 +57,47 @@ public class MainActivity extends AppCompatActivity {
         for(ImageView imageView: tile){
             imageView.setOnTouchListener(new OnSwipeListener(this){
                 @Override
-                void onSipwLeft() {
-                    super.onSipwLeft();
+                void onSwipeLeft() {
+                    super.onSwipeLeft();
                     tileToBeDraged = imageView.getId();
                     tileToBeReplaced = tileToBeDraged -1;
                     candyInterchange();
+
+                    maxNumOfMoves--;
+                    if(maxNumOfMoves == 0){
+                        System.out.println("sheeesh");
+                    }
                 }
 
                 @Override
-                void onSipwRight() {
-                    super.onSipwRight();
+                void onSwipeRight() {
+                    super.onSwipeRight();
                     tileToBeDraged = imageView.getId();
                     tileToBeReplaced = tileToBeDraged +1;
                     candyInterchange();
+                    currNumOfMoves++;
+
                 }
 
                 @Override
-                void onSipwTop() {
-                    super.onSipwTop();
+                void onSwipeTop() {
+                    super.onSwipeTop();
                     tileToBeDraged = imageView.getId();
                     tileToBeReplaced = tileToBeDraged - noOfBlocks;
                     candyInterchange();
+                    currNumOfMoves++;
+                    System.out.println(currNumOfMoves);
                 }
 
                 @SuppressLint("ClickableViewAccessibility")
                 @Override
-                void onSipwBottom() {
-                    super.onSipwBottom();
+                void onSwipeBottom() {
+                    super.onSwipeBottom();
                     tileToBeDraged = imageView.getId();
                     tileToBeReplaced = tileToBeDraged + noOfBlocks;
                     candyInterchange();
-
+                    currNumOfMoves++;
+                    System.out.println(currNumOfMoves);
                 }
             });
         }
