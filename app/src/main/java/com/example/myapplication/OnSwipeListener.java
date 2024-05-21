@@ -19,8 +19,8 @@ public class OnSwipeListener implements View.OnTouchListener {
     }
 
     private final class GestureListener extends GestureDetector.SimpleOnGestureListener{
-        public static final int SWIPE_THRESOLD = 50;
-        public static final int SWIPE_VELOCITY_THRESHOLD = 50;
+        public static final int SWIPE_THRESOLD = 100;
+        public static final int SWIPE_VELOCITY_THRESHOLD = 100;
 
         public boolean onDown(MotionEvent e){
             return true;
@@ -29,19 +29,18 @@ public class OnSwipeListener implements View.OnTouchListener {
         @Override
         public boolean onFling(@Nullable MotionEvent e1, @NonNull MotionEvent e2, float velocityX, float velocityY) {
             boolean result = false;
+
             float yDiff = e2.getY() - e1.getY();
             float xDiff = e2.getX() - e1.getX();
             if(Math.abs(xDiff)>Math.abs(yDiff)){
-                if(Math.abs(xDiff)>SWIPE_THRESOLD&&Math.abs(velocityX)>SWIPE_VELOCITY_THRESHOLD){
-                    if(xDiff>0){
+                if(Math.abs(xDiff)>SWIPE_THRESOLD&&Math.abs(velocityX)>SWIPE_VELOCITY_THRESHOLD) {
+                    if (xDiff > 0) {
                         onSwipeRight();
-                    }else
-                    {
+                    } else {
                         onSwipeLeft();
                     }
                     result = true;
                 }
-
             }
             else if(Math.abs(yDiff)>SWIPE_THRESOLD&&Math.abs(velocityY)>SWIPE_VELOCITY_THRESHOLD) {
                 if (yDiff > 0) {
