@@ -36,6 +36,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
+
         btnLvl1 = (Button)findViewById(R.id.btnLevel1);
         btnLogin = findViewById(R.id.btnLogin);
         videoView = findViewById(R.id.videoView);

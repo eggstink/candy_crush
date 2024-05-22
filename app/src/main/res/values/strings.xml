@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">My Application</string>
+
+
+    <string name="login_header"> Log in to your One Account </string>
+    <string name="login_signup"> Don\'t have an account? Sign Up </string>
+    <string name="login_login"> Log in </string>
+
+    <string name="signup_header"> Create your One Account </string>
+    <string name="signup_login"> Already have an account? Log In </string>
+    <string name="signup_signup"> Sign Up </string>
 </resources>
