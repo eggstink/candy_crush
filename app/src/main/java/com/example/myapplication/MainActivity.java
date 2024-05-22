@@ -2,6 +2,7 @@ package com.example.myapplication;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.DisplayMetrics;
@@ -13,6 +14,7 @@ import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.VideoView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -26,8 +28,8 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    Button btnLvl1;
-
+    Button btnLvl1, btnLogin;
+    VideoView videoView;
     @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +37,16 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         btnLvl1 = (Button)findViewById(R.id.btnLevel1);
+        btnLogin = findViewById(R.id.btnLogin);
+        videoView = findViewById(R.id.videoView);
+
+        Uri videoUri = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.candy_crush_bg3);
+        videoView.setVideoURI(videoUri);
+        videoView.setOnPreparedListener(mp -> {
+            mp.setLooping(true);
+            videoView.start();
+        });
+
         btnLvl1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -42,5 +54,12 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent1);
             }
         });
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (!videoView.isPlaying()) {
+            videoView.start();
+        }
     }
 }

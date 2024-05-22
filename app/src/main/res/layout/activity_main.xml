@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -6,18 +5,49 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <LinearLayout
+    <VideoView
+        android:id="@+id/videoView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="match_parent" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="0dp">
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:gravity="center"> <!-- Ensures children are centered horizontally -->
 
         <Button
             android:id="@+id/btnLevel1"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Open Layout Activity" />
+            android:layout_marginHorizontal="50dp"
+            android:layout_marginTop="50dp"
+            android:backgroundTint="#FFE400"
+            android:fontFamily="@font/babel_gamee"
+            android:minWidth="200dp"
+            android:singleLine="true"
+            android:text="PLAY"
+            android:textColor="#2E2C2C"
+            android:textSize="60sp" /> <!-- Set a minimum width to ensure the text fits -->
+
+        <Button
+            android:id="@+id/btnLogin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="50dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="50dp"
+            android:backgroundTint="#FFE400"
+            android:fontFamily="@font/game_paused"
+            android:minWidth="200dp"
+            android:singleLine="true"
+            android:text="Login"
+            android:textColor="#2E2C2C"
+            android:textSize="20sp" /> <!-- Set a minimum width to ensure the text fits -->
 
     </LinearLayout>
 
