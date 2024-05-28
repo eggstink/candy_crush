@@ -52,6 +52,7 @@
         android:background="#6C3939"
         android:orientation="horizontal" />
     <Button
+        android:id="@+id/reset3"
         android:layout_width="125dp"
         android:layout_height="50dp"
         android:text="Reset"
