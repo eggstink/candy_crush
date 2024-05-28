@@ -393,18 +393,24 @@ public class Level1 extends AppCompatActivity {
         tile.get(tileToBeReplaced).setTag(background1);
 
         if (!hasMatches()) {
-            tile.get(tileToBeDraged).setImageResource(background1);
-            tile.get(tileToBeReplaced).setImageResource(background);
-            tile.get(tileToBeDraged).setTag(background1);
-            tile.get(tileToBeReplaced).setTag(background);
+            mHandler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    tile.get(tileToBeDraged).setImageResource(background1);
+                    tile.get(tileToBeReplaced).setImageResource(background);
+                    tile.get(tileToBeDraged).setTag(background1);
+                    tile.get(tileToBeReplaced).setTag(background);
+                }
+            }, 500);
+
             swiped = false;
 
             Toast.makeText(this, "Invalid move! Please make a valid move.", Toast.LENGTH_SHORT).show();
         } else {
+            // If the move is valid, update the moves count and check for win condition
             tvMoves.setText("" + maxNumOfMoves--);
             if (maxNumOfMoves <= 0) {
                 Toast.makeText(this, "No more moves left!", Toast.LENGTH_SHORT).show();
-
             }
         }
     }
