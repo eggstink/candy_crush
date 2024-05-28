@@ -51,10 +51,11 @@
         android:layout_height="match_parent"
         android:background="#6C3939"
         android:orientation="horizontal" />
+
     <Button
+        android:id="@+id/reset2"
         android:layout_width="125dp"
         android:layout_height="50dp"
-        android:text="Reset"
         android:layout_gravity="center"
-        />
+        android:text="Reset" />
 </LinearLayout>
