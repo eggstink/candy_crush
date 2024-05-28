@@ -2,12 +2,12 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/level1Layout"
+    android:id="@+id/level3Layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:layout_gravity="center"
-    tools:context=".Level1"
+    tools:context=".Level3"
     >
 
     <LinearLayout
@@ -15,7 +15,7 @@
         android:layout_height="90dp"
         android:orientation="horizontal"
         android:padding="20dp"
-        android:id="@+id/linlay"
+        android:id="@+id/linlay3"
         android:gravity="center"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
@@ -30,7 +30,7 @@
             android:layout_height="wrap_content"
             android:text="0"
             android:textSize="28sp"
-            android:id="@+id/score"
+            android:id="@+id/score3"
             android:paddingRight="25dp"/>
         <TextView
             android:layout_width="wrap_content"
@@ -40,13 +40,13 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="20"
+            android:text="50"
             android:textSize="28sp"
-            android:id="@+id/moves"/>
+            android:id="@+id/moves3"/>
 
     </LinearLayout>
     <GridLayout
-        android:id="@+id/board"
+        android:id="@+id/board3"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#6C3939"

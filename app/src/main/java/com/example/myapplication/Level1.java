@@ -34,7 +34,7 @@ public class Level1 extends AppCompatActivity {
             R.drawable.redstone,
     };
 
-    int maxNumOfMoves = 50;
+    int maxNumOfMoves = 20;
     int widthOfBlock, noOfBlocks = 8, widthOfScreen, heightofScreen;
     ArrayList<ImageView> tile = new ArrayList<>();
     int tileToBeDraged, tileToBeReplaced;
@@ -42,6 +42,7 @@ public class Level1 extends AppCompatActivity {
     Handler mHandler;
     int interval = 300;
     TextView scoreRes;
+    TextView numOfMoves;
     int score = 0;
     boolean swiped = false;
 
@@ -50,15 +51,15 @@ public class Level1 extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_level1);
-
         tvMoves = (TextView)findViewById(R.id.moves);
+
         scoreRes = findViewById(R.id.score);
+        numOfMoves = findViewById(R.id.score);
         DisplayMetrics dm = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(dm);
         widthOfScreen = dm.widthPixels;
         heightofScreen = dm.heightPixels;
         widthOfBlock = widthOfScreen/noOfBlocks;
-
         createboard();
         mHandler = new Handler();
         startRepeat();
@@ -69,18 +70,22 @@ public class Level1 extends AppCompatActivity {
                 void onSwipeLeft() {
                     super.onSwipeLeft();
                     tileToBeDraged = imageView.getId();
-                    tileToBeReplaced = tileToBeDraged -1;
-                    swiped = true;
-                    candyInterchange();
+                    tileToBeReplaced = tileToBeDraged - 1;
+                    if (tileToBeReplaced >= 0) {
+                        swiped = true;
+                        candyInterchange();
+                    }
                 }
 
                 @Override
                 void onSwipeRight() {
                     super.onSwipeRight();
                     tileToBeDraged = imageView.getId();
-                    tileToBeReplaced = tileToBeDraged +1;
-                    swiped = true;
-                    candyInterchange();
+                    tileToBeReplaced = tileToBeDraged + 1;
+                    if (tileToBeReplaced < noOfBlocks * noOfBlocks) {
+                        swiped = true;
+                        candyInterchange();
+                    }
                 }
 
                 @Override
@@ -88,26 +93,44 @@ public class Level1 extends AppCompatActivity {
                     super.onSwipeTop();
                     tileToBeDraged = imageView.getId();
                     tileToBeReplaced = tileToBeDraged - noOfBlocks;
-                    swiped = true;
-                    candyInterchange();
+                    if (tileToBeReplaced >= 0) {
+                        swiped = true;
+                        candyInterchange();
+                    }
                 }
 
-                @SuppressLint("ClickableViewAccessibility")
                 @Override
                 void onSwipeBottom() {
                     super.onSwipeBottom();
                     tileToBeDraged = imageView.getId();
                     tileToBeReplaced = tileToBeDraged + noOfBlocks;
-                    swiped = true;
-                    candyInterchange();
-
+                    if (tileToBeReplaced < noOfBlocks * noOfBlocks) {
+                        swiped = true;
+                        candyInterchange();
+                    }
                 }
+
             });
         }
     }
+
+    private boolean hasMatches() {
+        int originalScore = score;
+
+        checkRowForFive();
+        checkRowForFour();
+        checkRowForThree();
+        checkColumnForFive();
+        checkColumnForFour();
+        checkColumnForThree();
+
+        return score > originalScore;
+    }
+
+
     private void checkRowForThree(){
         OnSwipeListener swipeListener = new OnSwipeListener(this);
-        for(int i = 0; i < 62;i++){
+        for(int i = 0; i < 61;i++){
             int chosenTile = (int)tile.get(i).getTag();
             boolean isBlank = (int)tile.get(i).getTag() == notTile;
             Integer[] notValid = {6,7,14,15,22,23,30,31,38,39,46,47,54,55};
@@ -129,6 +152,7 @@ public class Level1 extends AppCompatActivity {
                     if(swiped == true){
                         tvMoves.setText("" + maxNumOfMoves--);
                     }
+                    checkWinCondition();
                 }
             }
         }
@@ -138,7 +162,7 @@ public class Level1 extends AppCompatActivity {
 
     private void checkRowForFour() {
         OnSwipeListener swipeListener = new OnSwipeListener(this);
-        for (int i = 0; i < 62; i++) {
+        for (int i = 0; i < 61; i++) {
             int chosenTile = (int) tile.get(i).getTag();
             boolean isBlank = (int) tile.get(i).getTag() == notTile;
             Integer[] notValid = {6, 7, 14, 15, 22, 23, 30, 31, 38, 39, 46, 47, 54, 55};
@@ -164,6 +188,7 @@ public class Level1 extends AppCompatActivity {
                     if (swiped) {
                         tvMoves.setText("" + maxNumOfMoves--);
                     }
+                    checkWinCondition();
                 }
             }
         }
@@ -173,7 +198,7 @@ public class Level1 extends AppCompatActivity {
 
     private void checkRowForFive() {
         OnSwipeListener swipeListener = new OnSwipeListener(this);
-        for (int i = 0; i < 62; i++) {
+        for (int i = 0; i < 61; i++) {
             int chosenTile = (int) tile.get(i).getTag();
             boolean isBlank = (int) tile.get(i).getTag() == notTile;
             Integer[] notValid = {6, 7, 14, 15, 22, 23, 30, 31, 38, 39, 46, 47, 54, 55};
@@ -203,6 +228,7 @@ public class Level1 extends AppCompatActivity {
                     if (swiped) {
                         tvMoves.setText("" + maxNumOfMoves--);
                     }
+                    checkWinCondition();
                 }
             }
         }
@@ -211,7 +237,7 @@ public class Level1 extends AppCompatActivity {
     }
 
     private void checkColumnForThree(){
-        for(int i = 0; i < 47;i++){
+        for(int i = 0; i < 47 ;i++){
             int chosenTile = (int)tile.get(i).getTag();
             boolean isBlank = (int)tile.get(i).getTag() == notTile;
             int x = i;
@@ -232,6 +258,7 @@ public class Level1 extends AppCompatActivity {
                 if(swiped == true){
                     tvMoves.setText("" + maxNumOfMoves--);
                 }
+                checkWinCondition();
             }
             swiped = false;
         }
@@ -239,7 +266,7 @@ public class Level1 extends AppCompatActivity {
     }
 
     private void checkColumnForFour() {
-        for (int i = 0; i < 47; i++) {
+        for (int i = 0; i < 64 - 4 * noOfBlocks; i++) {
             int chosenTile = (int) tile.get(i).getTag();
             boolean isBlank = (int) tile.get(i).getTag() == notTile;
             int x = i;
@@ -263,6 +290,7 @@ public class Level1 extends AppCompatActivity {
                 if (swiped) {
                     tvMoves.setText("" + maxNumOfMoves--);
                 }
+                checkWinCondition();
             }
             swiped = false;
         }
@@ -270,7 +298,7 @@ public class Level1 extends AppCompatActivity {
     }
 
     private void checkColumnForFive() {
-        for (int i = 0; i < 47; i++) {
+        for (int i = 0; i < 64 - 4 * noOfBlocks; i++) {
             int chosenTile = (int) tile.get(i).getTag();
             boolean isBlank = (int) tile.get(i).getTag() == notTile;
             int x = i;
@@ -298,6 +326,7 @@ public class Level1 extends AppCompatActivity {
                 if (swiped) {
                     tvMoves.setText("" + maxNumOfMoves--);
                 }
+                checkWinCondition();
             }
             swiped = false;
         }
@@ -353,14 +382,34 @@ public class Level1 extends AppCompatActivity {
     void startRepeat(){
         repeatChecker.run();
     }
-    private void candyInterchange(){
-        int background = (int)tile.get(tileToBeReplaced).getTag();
-        int background1 = (int)tile.get(tileToBeDraged).getTag();
+
+    private void candyInterchange() {
+        int background = (int) tile.get(tileToBeReplaced).getTag();
+        int background1 = (int) tile.get(tileToBeDraged).getTag();
+
         tile.get(tileToBeDraged).setImageResource(background);
         tile.get(tileToBeReplaced).setImageResource(background1);
         tile.get(tileToBeDraged).setTag(background);
         tile.get(tileToBeReplaced).setTag(background1);
+
+        if (!hasMatches()) {
+            tile.get(tileToBeDraged).setImageResource(background1);
+            tile.get(tileToBeReplaced).setImageResource(background);
+            tile.get(tileToBeDraged).setTag(background1);
+            tile.get(tileToBeReplaced).setTag(background);
+            swiped = false;
+
+            Toast.makeText(this, "Invalid move! Please make a valid move.", Toast.LENGTH_SHORT).show();
+        } else {
+            tvMoves.setText("" + maxNumOfMoves--);
+            if (maxNumOfMoves <= 0) {
+                Toast.makeText(this, "No more moves left!", Toast.LENGTH_SHORT).show();
+
+            }
+        }
     }
+
+
 
     private void createboard() {
         GridLayout gridLayout = findViewById(R.id.board);
@@ -384,4 +433,11 @@ public class Level1 extends AppCompatActivity {
         }
 
     }
+
+    private void checkWinCondition() {
+        if (score >= 50) {
+            Toast.makeText(this, "You win!", Toast.LENGTH_SHORT).show();
+        }
+    }
+
 }
