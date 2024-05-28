@@ -22,6 +22,7 @@ import androidx.core.view.WindowInsetsCompat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 
 public class Level1 extends AppCompatActivity {
     TextView tvMoves;
@@ -421,24 +422,50 @@ public class Level1 extends AppCompatActivity {
         GridLayout gridLayout = findViewById(R.id.board);
         gridLayout.setRowCount(noOfBlocks);
         gridLayout.setColumnCount(noOfBlocks);
-        gridLayout.getLayoutParams().width=widthOfScreen;
-        gridLayout.getLayoutParams().height=widthOfScreen;
+        gridLayout.getLayoutParams().width = widthOfScreen;
+        gridLayout.getLayoutParams().height = widthOfScreen;
 
-        for(int i = 0; i < noOfBlocks*noOfBlocks;i++){
+        Random random = new Random();
+
+        for (int i = 0; i < noOfBlocks * noOfBlocks; i++) {
             ImageView imageView = new ImageView(this);
             imageView.setId(i);
-            imageView.setLayoutParams(new ViewGroup.LayoutParams(widthOfBlock,widthOfBlock));
+            imageView.setLayoutParams(new ViewGroup.LayoutParams(widthOfBlock, widthOfBlock));
             imageView.setMaxHeight(widthOfBlock);
             imageView.setMaxWidth(widthOfBlock);
-            int rand = (int) Math.floor(Math.random() * tiles.length);
-            imageView.setImageResource(tiles[rand]);
-            imageView.setTag(tiles[rand]);
+
+            int rand;
+            do {
+                rand = random.nextInt(tiles.length);
+                imageView.setImageResource(tiles[rand]);
+                imageView.setTag(tiles[rand]);
+            } while (hasInitialMatches(i, tiles[rand]));
+
             tile.add(imageView);
             gridLayout.addView(imageView);
-
         }
 
+        Log.d("Level3", "Board created without pre-matching tiles");
     }
+
+    private boolean hasInitialMatches(int index, int drawable) {
+        int row = index / noOfBlocks;
+        int col = index % noOfBlocks;
+
+        if (col >= 2) {
+            if (tile.get(index - 1).getTag().equals(drawable) && tile.get(index - 2).getTag().equals(drawable)) {
+                return true;
+            }
+        }
+
+        if (row >= 2) {
+            if (tile.get(index - noOfBlocks).getTag().equals(drawable) && tile.get(index - 2 * noOfBlocks).getTag().equals(drawable)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 
     private void checkWinCondition() {
         if (score >= 50) {
