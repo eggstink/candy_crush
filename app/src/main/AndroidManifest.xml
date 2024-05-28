@@ -22,6 +22,10 @@
             android:name=".LogInActivity"
             android:exported="false" />
         <activity
+            android:name=".Level2"
+            android:exported="true"/>
+
+        <activity
             android:name=".Level1"
             android:exported="false" />
         <activity

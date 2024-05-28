@@ -42,7 +42,6 @@ public class Level1 extends AppCompatActivity {
     Handler mHandler;
     int interval = 300;
     TextView scoreRes;
-    TextView numOfMoves;
     int score = 0;
     boolean swiped = false;
 
@@ -51,15 +50,15 @@ public class Level1 extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_level1);
-        tvMoves = (TextView)findViewById(R.id.moves);
 
+        tvMoves = (TextView)findViewById(R.id.moves);
         scoreRes = findViewById(R.id.score);
-        numOfMoves = findViewById(R.id.score);
         DisplayMetrics dm = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(dm);
         widthOfScreen = dm.widthPixels;
         heightofScreen = dm.heightPixels;
         widthOfBlock = widthOfScreen/noOfBlocks;
+
         createboard();
         mHandler = new Handler();
         startRepeat();
