@@ -1,6 +1,7 @@
 package com.example.myapplication;
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -8,6 +9,7 @@ import android.os.Handler;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -29,7 +31,10 @@ import java.util.Random;
 public class Level1 extends AppCompatActivity {
     TextView tvMoves;
     MediaPlayer music,pop;
+    Button btnExit, btnContinue, btnExit2;
+    Dialog dialog, scoreDialog;
     FirebaseFirestore firestore;
+
 
     int[] tiles = {
             R.drawable.diamond,
@@ -47,10 +52,11 @@ public class Level1 extends AppCompatActivity {
     int notTile = R.drawable.ic_launcher_background;
     Handler mHandler;
     int interval = 300;
-    TextView scoreRes;
+    TextView scoreRes, finalScore;
     TextView numOfMoves;
     int score = 0;
     boolean swiped = false;
+    boolean hasWon = false;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -64,6 +70,21 @@ public class Level1 extends AppCompatActivity {
 
         pop = MediaPlayer.create(Level1.this,R.raw.matchpop);
         pop.setLooping(false);
+
+        dialog = new Dialog(Level1.this);
+        dialog.setContentView(R.layout.confirm_dialog);
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialog.setCancelable(false);
+
+        scoreDialog = new Dialog(Level1.this);
+        scoreDialog.setContentView(R.layout.highscore_dialog);
+        scoreDialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+        scoreDialog.setCancelable(false);
+
+        btnExit = dialog.findViewById(R.id.btnExit);
+        btnContinue = dialog.findViewById(R.id.btnContinue);
+        btnExit2 = scoreDialog.findViewById(R.id.btnExit2);
+        finalScore = scoreDialog.findViewById(R.id.tvScore);
 
         scoreRes = findViewById(R.id.score);
         numOfMoves = findViewById(R.id.score);
@@ -166,6 +187,14 @@ public class Level1 extends AppCompatActivity {
                         tvMoves.setText("" + maxNumOfMoves--);
                     }
                     checkWinCondition();
+
+                    if(hasWon){
+                        if(maxNumOfMoves <= 0) {
+                            finalScore.setText(String.valueOf(score));
+                            scoreDialog.show();
+                            endCheckers();
+                        }
+                    }
                 }
             }
         }
@@ -203,6 +232,15 @@ public class Level1 extends AppCompatActivity {
                         tvMoves.setText("" + maxNumOfMoves--);
                     }
                     checkWinCondition();
+
+                    if(hasWon){
+                        if(maxNumOfMoves <= 0) {
+                            finalScore.setText(String.valueOf(score));
+                            scoreDialog.show();
+                            endCheckers();
+                        }
+
+                    }
                 }
             }
         }
@@ -244,6 +282,14 @@ public class Level1 extends AppCompatActivity {
                         tvMoves.setText("" + maxNumOfMoves--);
                     }
                     checkWinCondition();
+
+                    if(hasWon){
+                        if(maxNumOfMoves <= 0) {
+                            finalScore.setText(String.valueOf(score));
+                            scoreDialog.show();
+                            endCheckers();
+                        }
+                    }
                 }
             }
         }
@@ -275,6 +321,14 @@ public class Level1 extends AppCompatActivity {
                     tvMoves.setText("" + maxNumOfMoves--);
                 }
                 checkWinCondition();
+
+                if(hasWon){
+                    if(maxNumOfMoves <= 0) {
+                        finalScore.setText(String.valueOf(score));
+                        scoreDialog.show();
+                        endCheckers();
+                    }
+                }
             }
             swiped = false;
         }
@@ -308,6 +362,15 @@ public class Level1 extends AppCompatActivity {
                     tvMoves.setText("" + maxNumOfMoves--);
                 }
                 checkWinCondition();
+
+                if(hasWon){
+                    if(maxNumOfMoves <= 0) {
+                        finalScore.setText(String.valueOf(score));
+                        scoreDialog.show();
+                        endCheckers();
+                    }
+
+                }
             }
             swiped = false;
         }
@@ -345,6 +408,14 @@ public class Level1 extends AppCompatActivity {
                     tvMoves.setText("" + maxNumOfMoves--);
                 }
                 checkWinCondition();
+
+                if(hasWon){
+                    if(maxNumOfMoves <= 0) {
+                        finalScore.setText(String.valueOf(score));
+                        scoreDialog.show();
+                        endCheckers();
+                    }
+                }
             }
             swiped = false;
         }
@@ -482,44 +553,87 @@ public class Level1 extends AppCompatActivity {
         return false;
     }
 
+    private void endCheckers(){
 
-    private void checkWinCondition() {
-        if (score >= 50) {
-            Toast.makeText(this, "You win!", Toast.LENGTH_SHORT).show();
-
+        btnExit2.setOnClickListener(view->{
             firestore = FirebaseFirestore.getInstance();
             String currUser = FirebaseAuth.getInstance().getUid();
 
             firestore.collection("users").document(currUser).get().addOnSuccessListener(documentSnapshot -> {
-                if (documentSnapshot.exists()) {
-                    int highestScore = documentSnapshot.getLong("highestScore").intValue();
-                    Log.d("TAG", "Highest score retrieved successfully: " + highestScore);
+                        if (documentSnapshot.exists()) {
+                            int highestScore = documentSnapshot.getLong("highestScore").intValue();
+                            Log.d("TAG", "Highest score retrieved successfully: " + highestScore);
 
-                    if(score > highestScore) {
-                        firestore.collection("users").document(currUser).update("highestScore", score).addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void unused) {
-                                Log.d("TAG", "Highest score updated successfully");
+                            if(score > highestScore) {
+                                firestore.collection("users").document(currUser).update("highestScore", score).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void unused) {
+                                        Log.d("TAG", "Highest score updated successfully");
+                                    }
+                                }).addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Log.e("TAG", "Error updating highest score", e);
+                                    }
+                                });
                             }
-                        }).addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Log.e("TAG", "Error updating highest score", e);
-                            }
-                        });
-                    }
-                } else {
-                    Log.d("TAG", "User document does not exist");
-                }
-            })
-            .addOnFailureListener(e -> {
-                Log.e("TAG", "Error retrieving highest score", e);
-            });
+                        } else {
+                            Log.d("TAG", "User document does not exist");
+                        }
+                    })
+                    .addOnFailureListener(e -> {
+                        Log.e("TAG", "Error retrieving highest score", e);
+                    });
 
             finish();
             music.stop();
             startActivity(new Intent(Level1.this, SelectLvlActivity.class));
+        });
 
+        btnExit.setOnClickListener(view->{
+            firestore = FirebaseFirestore.getInstance();
+            String currUser = FirebaseAuth.getInstance().getUid();
+
+            firestore.collection("users").document(currUser).get().addOnSuccessListener(documentSnapshot -> {
+                        if (documentSnapshot.exists()) {
+                            int highestScore = documentSnapshot.getLong("highestScore").intValue();
+                            Log.d("TAG", "Highest score retrieved successfully: " + highestScore);
+
+                            if(score > highestScore) {
+                                firestore.collection("users").document(currUser).update("highestScore", score).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void unused) {
+                                        Log.d("TAG", "Highest score updated successfully");
+                                    }
+                                }).addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Log.e("TAG", "Error updating highest score", e);
+                                    }
+                                });
+                            }
+                        } else {
+                            Log.d("TAG", "User document does not exist");
+                        }
+                    })
+                    .addOnFailureListener(e -> {
+                        Log.e("TAG", "Error retrieving highest score", e);
+                    });
+
+            finish();
+            music.stop();
+            startActivity(new Intent(Level1.this, SelectLvlActivity.class));
+        });
+        btnContinue.setOnClickListener(view->{
+            hasWon = true;
+            dialog.dismiss();
+        });
+
+    }
+    private void checkWinCondition() {
+        if (score >= 50 && !hasWon) {
+            dialog.show();
+            endCheckers();
         }
     }
 

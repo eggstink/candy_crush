@@ -1,6 +1,7 @@
 package com.example.myapplication;
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -60,9 +61,11 @@ public class Level3 extends AppCompatActivity {
     Handler mHandler;
     int interval = 300;
     Button btnReset3;
-    TextView scoreRes;
+    Button btnExit, btnContinue, btnExit2;
+    Dialog dialog, scoreDialog;
+    TextView scoreRes, finalScore;
     int score = 0;
-    boolean swiped = false;
+    boolean swiped = false, hasWon = false;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -76,6 +79,21 @@ public class Level3 extends AppCompatActivity {
         music3.setLooping(true);
         music3.start();
         pop = MediaPlayer.create(Level3.this,R.raw.matchpop);
+
+        dialog = new Dialog(Level3.this);
+        dialog.setContentView(R.layout.confirm_dialog);
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialog.setCancelable(false);
+
+        scoreDialog = new Dialog(Level3.this);
+        scoreDialog.setContentView(R.layout.highscore_dialog);
+        scoreDialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+        scoreDialog.setCancelable(false);
+
+        btnExit = dialog.findViewById(R.id.btnExit);
+        btnContinue = dialog.findViewById(R.id.btnContinue);
+        btnExit2 = scoreDialog.findViewById(R.id.btnExit2);
+        finalScore = scoreDialog.findViewById(R.id.tvScore);
 
         DisplayMetrics dm = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(dm);
@@ -286,6 +304,13 @@ public class Level3 extends AppCompatActivity {
             }
         }
         checkWinCondition();
+        if(hasWon){
+            if(maxNumOfMoves <= 0) {
+                finalScore.setText(String.valueOf(score));
+                scoreDialog.show();
+                endCheckers();
+            }
+        }
     }
 
 
@@ -323,6 +348,13 @@ public class Level3 extends AppCompatActivity {
             }
         }
         checkWinCondition();
+        if(hasWon){
+            if(maxNumOfMoves <= 0) {
+                finalScore.setText(String.valueOf(score));
+                scoreDialog.show();
+                endCheckers();
+            }
+        }
     }
 
     private void checkRowForFive() {
@@ -359,6 +391,13 @@ public class Level3 extends AppCompatActivity {
             }
         }
         checkWinCondition();
+        if(hasWon){
+            if(maxNumOfMoves <= 0) {
+                finalScore.setText(String.valueOf(score));
+                scoreDialog.show();
+                endCheckers();
+            }
+        }
     }
 
 
@@ -384,6 +423,13 @@ public class Level3 extends AppCompatActivity {
             }
         }
         checkWinCondition();
+        if(hasWon){
+            if(maxNumOfMoves <= 0) {
+                finalScore.setText(String.valueOf(score));
+                scoreDialog.show();
+                endCheckers();
+            }
+        }
     }
 
 
@@ -414,6 +460,13 @@ public class Level3 extends AppCompatActivity {
             }
         }
         checkWinCondition();
+        if(hasWon){
+            if(maxNumOfMoves <= 0) {
+                finalScore.setText(String.valueOf(score));
+                scoreDialog.show();
+                endCheckers();
+            }
+        }
     }
 
     private void checkColumnForFive() {
@@ -446,6 +499,13 @@ public class Level3 extends AppCompatActivity {
             }
         }
         checkWinCondition();
+        if(hasWon){
+            if(maxNumOfMoves <= 0) {
+                finalScore.setText(String.valueOf(score));
+                scoreDialog.show();
+                endCheckers();
+            }
+        }
     }
 
     private void moveDownTiles() {
@@ -497,8 +557,14 @@ public class Level3 extends AppCompatActivity {
     }
 
     private void checkWinCondition() {
-        if (score >= 10) {
-            Toast.makeText(this, "You win!", Toast.LENGTH_SHORT).show();
+        if (score >= 10 && !hasWon) {
+            dialog.show();
+            endCheckers();
+        }
+    }
+    private void endCheckers(){
+
+        btnExit2.setOnClickListener(view->{
 
             firestore = FirebaseFirestore.getInstance();
             String currUser = FirebaseAuth.getInstance().getUid();
@@ -508,7 +574,7 @@ public class Level3 extends AppCompatActivity {
                             int highestScore = documentSnapshot.getLong("highestScore").intValue();
                             Log.d("TAG", "Highest score retrieved successfully: " + highestScore);
 
-                            if(score > highestScore) {
+                            if (score > highestScore) {
                                 firestore.collection("users").document(currUser).update("highestScore", score).addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
                                     public void onSuccess(Void unused) {
@@ -532,6 +598,46 @@ public class Level3 extends AppCompatActivity {
             finish();
             music3.stop();
             startActivity(new Intent(Level3.this, SelectLvlActivity.class));
-        }
+        });
+
+        btnExit.setOnClickListener(view->{
+
+            firestore = FirebaseFirestore.getInstance();
+            String currUser = FirebaseAuth.getInstance().getUid();
+
+            firestore.collection("users").document(currUser).get().addOnSuccessListener(documentSnapshot -> {
+                        if (documentSnapshot.exists()) {
+                            int highestScore = documentSnapshot.getLong("highestScore").intValue();
+                            Log.d("TAG", "Highest score retrieved successfully: " + highestScore);
+
+                            if (score > highestScore) {
+                                firestore.collection("users").document(currUser).update("highestScore", score).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void unused) {
+                                        Log.d("TAG", "Highest score updated successfully");
+                                    }
+                                }).addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Log.e("TAG", "Error updating highest score", e);
+                                    }
+                                });
+                            }
+                        } else {
+                            Log.d("TAG", "User document does not exist");
+                        }
+                    })
+                    .addOnFailureListener(e -> {
+                        Log.e("TAG", "Error retrieving highest score", e);
+                    });
+
+            finish();
+            music3.stop();
+            startActivity(new Intent(Level3.this, SelectLvlActivity.class));
+        });
+        btnContinue.setOnClickListener(view->{
+            hasWon = true;
+            dialog.dismiss();
+        });
     }
 }
