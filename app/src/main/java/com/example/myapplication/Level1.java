@@ -8,18 +8,18 @@ import android.os.Handler;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.ViewGroup;
-import android.view.animation.GridLayoutAnimationController;
-import android.widget.Button;
 import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
+
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -29,6 +29,7 @@ import java.util.Random;
 public class Level1 extends AppCompatActivity {
     TextView tvMoves;
     MediaPlayer music,pop;
+    FirebaseFirestore firestore;
 
     int[] tiles = {
             R.drawable.diamond,
@@ -485,6 +486,36 @@ public class Level1 extends AppCompatActivity {
     private void checkWinCondition() {
         if (score >= 50) {
             Toast.makeText(this, "You win!", Toast.LENGTH_SHORT).show();
+
+            firestore = FirebaseFirestore.getInstance();
+            String currUser = FirebaseAuth.getInstance().getUid();
+
+            firestore.collection("users").document(currUser).get().addOnSuccessListener(documentSnapshot -> {
+                if (documentSnapshot.exists()) {
+                    int highestScore = documentSnapshot.getLong("highestScore").intValue();
+                    Log.d("TAG", "Highest score retrieved successfully: " + highestScore);
+
+                    if(score > highestScore) {
+                        firestore.collection("users").document(currUser).update("highestScore", score).addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void unused) {
+                                Log.d("TAG", "Highest score updated successfully");
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.e("TAG", "Error updating highest score", e);
+                            }
+                        });
+                    }
+                } else {
+                    Log.d("TAG", "User document does not exist");
+                }
+            })
+            .addOnFailureListener(e -> {
+                Log.e("TAG", "Error retrieving highest score", e);
+            });
+
             finish();
             music.stop();
             startActivity(new Intent(Level1.this, SelectLvlActivity.class));

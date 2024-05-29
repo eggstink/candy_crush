@@ -113,11 +113,13 @@ public class RegisterActivity extends AppCompatActivity {
                         userId = auth.getCurrentUser().getUid();
                         DocumentReference docref = firestore.collection("users").document(userId);
 
+                        int initialScore = 0;
+
                         Map<String, Object> user = new HashMap<>();
                         user.put("username", username);
                         user.put("firstName", firstname);
                         user.put("lastName", lastname);
-
+                        user.put("highestScore", initialScore);
 
                         docref.set(user)
                                 .addOnSuccessListener(new OnSuccessListener<Void>() {
