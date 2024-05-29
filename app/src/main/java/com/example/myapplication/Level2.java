@@ -294,9 +294,22 @@ public class Level2 extends AppCompatActivity {
                     tile.get(x).setImageResource(notTile);
                     tile.get(x).setTag(notTile);
                     pop.start();
+                    if(swiped == true) {
+                        tvMoves.setText("" + maxNumOfMoves--);
+                    }
+                    checkWinCondition();
+
+                    if (hasWon) {
+                        if (maxNumOfMoves <= 0) {
+                            finalScore.setText(String.valueOf(score));
+                            scoreDialog.show();
+                            endCheckers();
+                        }
+                    }
                 }
             }
         }
+        swiped = false;
         checkWinCondition();
     }
 
@@ -326,9 +339,23 @@ public class Level2 extends AppCompatActivity {
                     x--;
                     tile.get(x).setImageResource(notTile);
                     tile.get(x).setTag(notTile);
+                    pop.start();
+                    if(swiped == true) {
+                        tvMoves.setText("" + maxNumOfMoves--);
+                    }
+                    checkWinCondition();
+
+                    if (hasWon) {
+                        if (maxNumOfMoves <= 0) {
+                            finalScore.setText(String.valueOf(score));
+                            scoreDialog.show();
+                            endCheckers();
+                        }
+                    }
                 }
             }
         }
+        swiped = false;
         checkWinCondition();
     }
 
@@ -361,9 +388,23 @@ public class Level2 extends AppCompatActivity {
                     x--;
                     tile.get(x).setImageResource(notTile);
                     tile.get(x).setTag(notTile);
+                    pop.start();
+                    if(swiped == true) {
+                        tvMoves.setText("" + maxNumOfMoves--);
+                    }
+                    checkWinCondition();
+
+                    if (hasWon) {
+                        if (maxNumOfMoves <= 0) {
+                            finalScore.setText(String.valueOf(score));
+                            scoreDialog.show();
+                            endCheckers();
+                        }
+                    }
                 }
             }
         }
+        swiped = false;
         checkWinCondition();
     }
 
@@ -385,7 +426,21 @@ public class Level2 extends AppCompatActivity {
                 x = x + noOfBlocks;
                 tile.get(x).setImageResource(notTile);
                 tile.get(x).setTag(notTile);
+                pop.start();
+                if(swiped == true) {
+                    tvMoves.setText("" + maxNumOfMoves--);
+                }
+                checkWinCondition();
+
+                if (hasWon) {
+                    if (maxNumOfMoves <= 0) {
+                        finalScore.setText(String.valueOf(score));
+                        scoreDialog.show();
+                        endCheckers();
+                    }
+                }
             }
+            swiped = false;
         }
         checkWinCondition();
     }
@@ -412,7 +467,21 @@ public class Level2 extends AppCompatActivity {
                 x = x + noOfBlocks;
                 tile.get(x).setImageResource(notTile);
                 tile.get(x).setTag(notTile);
+                pop.start();
+                if(swiped == true) {
+                    tvMoves.setText("" + maxNumOfMoves--);
+                }
+                checkWinCondition();
+
+                if (hasWon) {
+                    if (maxNumOfMoves <= 0) {
+                        finalScore.setText(String.valueOf(score));
+                        scoreDialog.show();
+                        endCheckers();
+                    }
+                }
             }
+            swiped = false;
         }
         checkWinCondition();
     }
@@ -443,7 +512,21 @@ public class Level2 extends AppCompatActivity {
                 x = x + noOfBlocks;
                 tile.get(x).setImageResource(notTile);
                 tile.get(x).setTag(notTile);
+                pop.start();
+                if(swiped == true) {
+                    tvMoves.setText("" + maxNumOfMoves--);
+                }
+                checkWinCondition();
+
+                if (hasWon) {
+                    if (maxNumOfMoves <= 0) {
+                        finalScore.setText(String.valueOf(score));
+                        scoreDialog.show();
+                        endCheckers();
+                    }
+                }
             }
+            swiped = false;
         }
         checkWinCondition();
     }
