@@ -7,4 +7,40 @@
     android:layout_height="match_parent"
     tools:context=".SplashScreen">
 
+
+    <VideoView
+        android:id="@+id/splashVidView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/splashVidView">
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/pixeboy_z8xgd"
+            android:gravity="center"
+            android:text="Pixel"
+            android:textColor="@color/black"
+            android:textSize="64dp" />
+
+        <TextView
+            android:id="@+id/textView5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/pixeboy_z8xgd"
+            android:gravity="center"
+            android:text="Crush"
+            android:textColor="@color/black"
+            android:textSize="32dp" />
+    </LinearLayout>
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
