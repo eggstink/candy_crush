@@ -1,5 +1,7 @@
 plugins {
-    alias(libs.plugins.androidApplication)
+    id("com.android.application")
+//    alias(libs.plugins.googleGmsGoogleServices)
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -29,14 +31,16 @@ android {
 }
 
 dependencies {
-
-    implementation(libs.appcompat)
+    implementation("androidx.appcompat:appcompat:1.3.1")
     implementation(libs.material)
+    implementation("androidx.activity:activity-ktx:1.3.1")
+    implementation("androidx.constraintlayout:constraintlayout:2.1.0")
+    implementation(libs.firebase.firestore)
     implementation(libs.activity)
-    implementation(libs.constraintlayout)
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.ext.junit)
-    androidTestImplementation(libs.espresso.core)
-    // https://mvnrepository.com/artifact/mysql/mysql-connector-java
-    implementation("mysql:mysql-connector-java:8.0.33")
+    implementation(libs.firebase.auth)
+    testImplementation("junit:junit:4.13.2")
+    androidTestImplementation("androidx.test.ext:junit:1.1.3")
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")
 }
+
+//apply(plugin = "com.google.gms.google-services")

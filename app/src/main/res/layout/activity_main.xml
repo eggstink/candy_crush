@@ -21,7 +21,7 @@
         android:gravity="center"> <!-- Ensures children are centered horizontally -->
 
         <Button
-            android:id="@+id/btnLevel1"
+            android:id="@+id/btnStart"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="50dp"
