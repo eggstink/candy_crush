@@ -2,6 +2,7 @@ package com.example.myapplication;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.DisplayMetrics;
@@ -38,16 +39,17 @@ public class Level3 extends AppCompatActivity {
     private boolean[][] pattern = {
             {false, false, false, false, false, false, false, false, false, false, false},
             {false, false, false, false, false, false, false, false, false, false, false},
-            {true,  true,  false,  false, false,  true,  false,  false, false,  true,  false },
+            {true,  true,  false,  false, false, true, false, false, false, true,  false},
             {true,  false, true,  false, true,  false, true,  false, true,  false, true },
             {true,  false, true,  false, true,  true,  true,  false, true,  true,  true },
             {true,  false, true,  false, true,  false, true,  false, true,  false, true },
-            {true,  true,  false,  false, true,  false, true,  false, true,  false, true },
+            {true,  true,  false,  false, true,  false, true,  false, true,  false, true},
             {false, false, false, false, false, false, false, false, false, false, false},
             {false, false, false, false, false, false, false, false, false, false, false}
     };
     int tileToBeDragged, tileToBeReplaced;
     int notTile = R.drawable.ic_launcher_background;
+    MediaPlayer music3;
     Handler mHandler;
     int interval = 300;
     Button btnReset3;
@@ -63,6 +65,9 @@ public class Level3 extends AppCompatActivity {
         tvMoves = findViewById(R.id.moves3);
         scoreRes = findViewById(R.id.score3);
         btnReset3 = findViewById(R.id.reset3);
+        music3 = MediaPlayer.create(Level3.this,R.raw.daa);
+        music3.setLooping(true);
+        music3.start();
 
         DisplayMetrics dm = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(dm);
@@ -124,6 +129,7 @@ public class Level3 extends AppCompatActivity {
         btnReset3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                music3.stop();
                 Intent intent = new Intent(Level3.this, Level3.class);
                 finish();
                 startActivity(intent);
@@ -220,7 +226,7 @@ public class Level3 extends AppCompatActivity {
                 Toast.makeText(this, "Invalid move! Please make a valid move.", Toast.LENGTH_SHORT).show();
             } else {
                 tvMoves.setText("" + maxNumOfMoves--);
-                if (maxNumOfMoves <= 0) {
+                if (maxNumOfMoves <= 0 && score < 100) {
                     Toast.makeText(this, "No more moves left!", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -267,6 +273,7 @@ public class Level3 extends AppCompatActivity {
                 }
             }
         }
+        checkWinCondition();
     }
 
     private void checkRowForFour() {
@@ -297,6 +304,7 @@ public class Level3 extends AppCompatActivity {
                 }
             }
         }
+        checkWinCondition();
     }
 
     private void checkRowForFive() {
@@ -331,6 +339,7 @@ public class Level3 extends AppCompatActivity {
                 }
             }
         }
+        checkWinCondition();
     }
 
     private void checkColumnForThree() {
@@ -353,6 +362,7 @@ public class Level3 extends AppCompatActivity {
                 tile.get(x).setTag(notTile);
             }
         }
+        checkWinCondition();
     }
 
     private void checkColumnForFour() {
@@ -379,6 +389,7 @@ public class Level3 extends AppCompatActivity {
                 tile.get(x).setTag(notTile);
             }
         }
+        checkWinCondition();
     }
 
     private void checkColumnForFive() {
@@ -409,6 +420,7 @@ public class Level3 extends AppCompatActivity {
                 tile.get(x).setTag(notTile);
             }
         }
+        checkWinCondition();
     }
 
     private void moveDownTiles() {
@@ -459,5 +471,10 @@ public class Level3 extends AppCompatActivity {
         });
     }
 
-
+    private void checkWinCondition() {
+        if (score >= 100) {
+            Toast.makeText(this, "You win!", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(Level3.this, SelectLvlActivity.class));
+        }
+    }
 }

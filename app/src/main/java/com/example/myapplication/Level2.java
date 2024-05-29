@@ -2,6 +2,7 @@ package com.example.myapplication;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.DisplayMetrics;
@@ -21,6 +22,7 @@ import java.util.Random;
 
 public class Level2 extends AppCompatActivity {
     TextView tvMoves;
+    MediaPlayer music2;
     int[] tiles = {
             R.drawable.diamond, R.drawable.gold, R.drawable.iron, R.drawable.lapis, R.drawable.netherite, R.drawable.redstone
     };
@@ -47,6 +49,11 @@ public class Level2 extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_level2);
+
+        music2 = MediaPlayer.create(Level2.this,R.raw.lvl2music);
+        music2.setLooping(true);
+        music2.start();
+
         tvMoves = findViewById(R.id.moves2);
         scoreRes = findViewById(R.id.score2);
         btnReset = findViewById(R.id.reset2);
@@ -214,7 +221,7 @@ public class Level2 extends AppCompatActivity {
                 Toast.makeText(this, "Invalid move! Please make a valid move.", Toast.LENGTH_SHORT).show();
             } else {
                 tvMoves.setText("" + maxNumOfMoves--);
-                if (maxNumOfMoves <= 0) {
+                if (maxNumOfMoves <= 0 && score < 80) {
                     Toast.makeText(this, "No more moves left!", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -260,6 +267,7 @@ public class Level2 extends AppCompatActivity {
                 }
             }
         }
+        checkWinCondition();
     }
 
 
@@ -275,7 +283,7 @@ public class Level2 extends AppCompatActivity {
                         (int) tile.get(x++).getTag() == chosenTile &&
                         (int) tile.get(x++).getTag() == chosenTile &&
                         (int) tile.get(x).getTag() == chosenTile) {
-                    score += 1;
+                    score += 2;
                     scoreRes.setText(String.valueOf(score));
                     tile.get(x).setImageResource(notTile);
                     tile.get(x).setTag(notTile);
@@ -291,6 +299,7 @@ public class Level2 extends AppCompatActivity {
                 }
             }
         }
+        checkWinCondition();
     }
 
     private void checkRowForFive() {
@@ -306,7 +315,7 @@ public class Level2 extends AppCompatActivity {
                         (int) tile.get(x++).getTag() == chosenTile &&
                         (int) tile.get(x++).getTag() == chosenTile &&
                         (int) tile.get(x).getTag() == chosenTile) {
-                    score += 1;
+                    score += 3;
                     scoreRes.setText(String.valueOf(score));
                     tile.get(x).setImageResource(notTile);
                     tile.get(x).setTag(notTile);
@@ -325,6 +334,7 @@ public class Level2 extends AppCompatActivity {
                 }
             }
         }
+        checkWinCondition();
     }
 
     private void checkColumnForThree() {
@@ -347,6 +357,7 @@ public class Level2 extends AppCompatActivity {
                 tile.get(x).setTag(notTile);
             }
         }
+        checkWinCondition();
     }
 
     private void checkColumnForFour() {
@@ -358,7 +369,7 @@ public class Level2 extends AppCompatActivity {
                     (int) tile.get(x + noOfBlocks).getTag() == chosenTile &&
                     (int) tile.get(x + 2 * noOfBlocks).getTag() == chosenTile &&
                     (int) tile.get(x + 3 * noOfBlocks).getTag() == chosenTile) {
-                score += 1;
+                score += 2;
                 scoreRes.setText(String.valueOf(score));
                 tile.get(x).setImageResource(notTile);
                 tile.get(x).setTag(notTile);
@@ -373,6 +384,7 @@ public class Level2 extends AppCompatActivity {
                 tile.get(x).setTag(notTile);
             }
         }
+        checkWinCondition();
     }
 
     private void checkColumnForFive() {
@@ -385,7 +397,7 @@ public class Level2 extends AppCompatActivity {
                     (int) tile.get(x + 2 * noOfBlocks).getTag() == chosenTile &&
                     (int) tile.get(x + 3 * noOfBlocks).getTag() == chosenTile &&
                     (int) tile.get(x + 4 * noOfBlocks).getTag() == chosenTile) {
-                score += 1;
+                score += 3;
                 scoreRes.setText(String.valueOf(score));
                 tile.get(x).setImageResource(notTile);
                 tile.get(x).setTag(notTile);
@@ -403,6 +415,7 @@ public class Level2 extends AppCompatActivity {
                 tile.get(x).setTag(notTile);
             }
         }
+        checkWinCondition();
     }
 
     private void moveDownTiles() {
@@ -452,6 +465,11 @@ public class Level2 extends AppCompatActivity {
             }
         });
     }
-
+    private void checkWinCondition() {
+        if (score >= 80) {
+            Toast.makeText(this, "You win!", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(Level2.this, SelectLvlActivity.class));
+        }
+    }
 
 }
