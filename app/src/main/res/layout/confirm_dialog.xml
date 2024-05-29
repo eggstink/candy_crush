@@ -10,6 +10,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="#EAE51A"
         android:padding="10dp">
 
         <TextView
@@ -42,38 +43,38 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@id/textView7">
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnExit"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
                 android:layout_weight="1"
+                android:fontFamily="@font/pixeboy_z8xgd"
                 android:padding="12dp"
                 android:text="Exit"
                 android:textColor="@color/white"
                 android:textSize="12sp"
-                android:fontFamily="@font/pixeboy_z8xgd"
-                android:layout_marginEnd="10dp"
-                android:layout_marginStart="10dp"
-                 />
+                app:backgroundTint="#AE2727" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnContinue"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:padding="12dp"
-                android:textColor="@color/white"
-                android:text="Continue"
-                android:textSize="12sp"
-                android:fontFamily="@font/pixeboy_z8xgd"
-                android:layout_marginEnd="10dp"
                 android:layout_marginStart="10dp"
-                 />
+                android:layout_marginEnd="10dp"
+                android:layout_weight="1"
+                android:fontFamily="@font/pixeboy_z8xgd"
+                android:padding="12dp"
+                android:text="Continue"
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                app:backgroundTint="#6986F8" />
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

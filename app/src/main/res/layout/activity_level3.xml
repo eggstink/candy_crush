@@ -80,14 +80,16 @@
             android:layout_width="125dp"
             android:layout_height="50dp"
             android:layout_margin="10dp"
-            android:text="Reset" />
+            android:text="Reset"
+            android:backgroundTint="#DCC500"/>
 
         <Button
             android:id="@+id/btnExitGame3"
             android:layout_width="125dp"
             android:layout_height="50dp"
             android:layout_margin="10dp"
-            android:text="Exit" />
+            android:text="Exit"
+            app:backgroundTint="#AE2727"/>
 
     </LinearLayout>
 </LinearLayout>
