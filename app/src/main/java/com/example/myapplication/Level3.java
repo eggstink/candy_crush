@@ -226,7 +226,7 @@ public class Level3 extends AppCompatActivity {
                 Toast.makeText(this, "Invalid move! Please make a valid move.", Toast.LENGTH_SHORT).show();
             } else {
                 tvMoves.setText("" + maxNumOfMoves--);
-                if (maxNumOfMoves <= 0) {
+                if (maxNumOfMoves <= 0 && score < 100) {
                     Toast.makeText(this, "No more moves left!", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -273,6 +273,7 @@ public class Level3 extends AppCompatActivity {
                 }
             }
         }
+        checkWinCondition();
     }
 
     private void checkRowForFour() {
@@ -303,6 +304,7 @@ public class Level3 extends AppCompatActivity {
                 }
             }
         }
+        checkWinCondition();
     }
 
     private void checkRowForFive() {
@@ -337,6 +339,7 @@ public class Level3 extends AppCompatActivity {
                 }
             }
         }
+        checkWinCondition();
     }
 
     private void checkColumnForThree() {
@@ -359,6 +362,7 @@ public class Level3 extends AppCompatActivity {
                 tile.get(x).setTag(notTile);
             }
         }
+        checkWinCondition();
     }
 
     private void checkColumnForFour() {
@@ -385,6 +389,7 @@ public class Level3 extends AppCompatActivity {
                 tile.get(x).setTag(notTile);
             }
         }
+        checkWinCondition();
     }
 
     private void checkColumnForFive() {
@@ -415,6 +420,7 @@ public class Level3 extends AppCompatActivity {
                 tile.get(x).setTag(notTile);
             }
         }
+        checkWinCondition();
     }
 
     private void moveDownTiles() {
@@ -465,5 +471,10 @@ public class Level3 extends AppCompatActivity {
         });
     }
 
-
+    private void checkWinCondition() {
+        if (score >= 100) {
+            Toast.makeText(this, "You win!", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(Level3.this, SelectLvlActivity.class));
+        }
+    }
 }

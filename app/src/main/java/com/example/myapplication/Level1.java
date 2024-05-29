@@ -1,6 +1,7 @@
 package com.example.myapplication;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
@@ -415,7 +416,7 @@ public class Level1 extends AppCompatActivity {
         } else {
             // If the move is valid, update the moves count and check for win condition
             tvMoves.setText("" + maxNumOfMoves--);
-            if (maxNumOfMoves <= 0) {
+            if (maxNumOfMoves <= 0 && score < 50) {
                 Toast.makeText(this, "No more moves left!", Toast.LENGTH_SHORT).show();
             }
         }
@@ -475,6 +476,7 @@ public class Level1 extends AppCompatActivity {
     private void checkWinCondition() {
         if (score >= 50) {
             Toast.makeText(this, "You win!", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(Level1.this, SelectLvlActivity.class));
         }
     }
 
