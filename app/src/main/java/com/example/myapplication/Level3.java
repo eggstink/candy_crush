@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
@@ -32,6 +33,8 @@ import java.util.Random;
 public class Level3 extends AppCompatActivity {
     FirebaseFirestore firestore;
     TextView tvMoves;
+
+    Thread repeatThread;
     int[] tiles = {
             R.drawable.diamond,
             R.drawable.gold,
@@ -72,6 +75,11 @@ public class Level3 extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_level3);
+
+        mHandler = new Handler();
+        repeatThread = new Thread(new Level3.RepeatRunnable());
+        repeatThread.start();
+
         tvMoves = findViewById(R.id.moves3);
         scoreRes = findViewById(R.id.score3);
         btnReset3 = findViewById(R.id.reset3);
@@ -169,6 +177,24 @@ public class Level3 extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    private class RepeatRunnable implements Runnable {
+        @Override
+        public void run() {
+            Looper.prepare();
+            mHandler.post(new Runnable() {
+                @Override
+                public void run() {
+                    moveDownTiles();
+                    if (swiped) {
+                        hasMatches();
+                    }
+                    mHandler.postDelayed(this, interval);
+                }
+            });
+            Looper.loop();
+        }
     }
 
     private void createboard() {

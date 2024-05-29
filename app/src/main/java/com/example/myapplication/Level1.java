@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
@@ -59,11 +60,18 @@ public class Level1 extends AppCompatActivity {
     boolean swiped = false;
     boolean hasWon = false;
 
+    Thread repeatThread;
+
     @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_level1);
+
+        mHandler = new Handler();
+        repeatThread = new Thread(new Level1.RepeatRunnable());
+        repeatThread.start();
+
         tvMoves = (TextView)findViewById(R.id.moves);
         music = MediaPlayer.create(Level1.this,R.raw.lvl1);
         music.setLooping(true);
@@ -162,6 +170,24 @@ public class Level1 extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    private class RepeatRunnable implements Runnable {
+        @Override
+        public void run() {
+            Looper.prepare();
+            mHandler.post(new Runnable() {
+                @Override
+                public void run() {
+                    moveDownCandies();
+                    if (swiped) {
+                        hasMatches();
+                    }
+                    mHandler.postDelayed(this, interval);
+                }
+            });
+            Looper.loop();
+        }
     }
 
     private boolean hasMatches() {

@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
@@ -54,6 +55,7 @@ public class Level2 extends AppCompatActivity {
     Handler mHandler;
     Button btnReset;
     TextView scoreRes, finalScore;
+    Thread repeatThread;
     boolean swiped = false, hasWon = false;
 
     @SuppressLint("ClickableViewAccessibility")
@@ -61,6 +63,10 @@ public class Level2 extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_level2);
+
+        mHandler = new Handler();
+        repeatThread = new Thread(new Level2.RepeatRunnable());
+        repeatThread.start();
 
         music2 = MediaPlayer.create(Level2.this,R.raw.lvl2music);
         music2.setLooping(true);
@@ -161,7 +167,23 @@ public class Level2 extends AppCompatActivity {
         });
     }
 
-
+    private class RepeatRunnable implements Runnable {
+        @Override
+        public void run() {
+            Looper.prepare();
+            mHandler.post(new Runnable() {
+                @Override
+                public void run() {
+                    moveDownTiles();
+                    if (swiped) {
+                        hasMatches();
+                    }
+                    mHandler.postDelayed(this, interval);
+                }
+            });
+            Looper.loop();
+        }
+    }
 
     private void handleSwipe(ImageView imageView, int targetTileId) {
         tileToBeDragged = imageView.getId();
