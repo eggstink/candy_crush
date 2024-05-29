@@ -13,43 +13,56 @@ import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
-public class Level2 extends AppCompatActivity {
+public class Level3 extends AppCompatActivity {
     TextView tvMoves;
     int[] tiles = {
-            R.drawable.diamond, R.drawable.gold, R.drawable.iron, R.drawable.lapis, R.drawable.netherite, R.drawable.redstone
+            R.drawable.diamond,
+            R.drawable.gold,
+            R.drawable.iron,
+            R.drawable.lapis,
+            R.drawable.netherite,
+            R.drawable.redstone,
     };
-    int maxNumOfMoves = 50, widthOfBlock, noOfBlocks = 8, widthOfScreen, heightofScreen;
+
+    int maxNumOfMoves = 50;
+    int widthOfBlock, noOfBlocks = 11, widthOfScreen, heightofScreen;
     ArrayList<ImageView> tile = new ArrayList<>();
-    boolean[][] crossPattern = {
-            {false, false, true, true, true, true, false, false},
-            {false, false, true, true, true, true, false, false},
-            {true, true, true, true, true, true, true, true},
-            {true, true, true, true, true, true, true, true},
-            {true, true, true, true, true, true, true, true},
-            {true, true, true, true, true, true, true, true},
-            {false, false, true, true, true, true, false, false},
-            {false, false, true, true, true, true, false, false}
+    private boolean[][] pattern = {
+            {false, false, false, false, false, false, false, false, false, false, false},
+            {false, false, false, false, false, false, false, false, false, false, false},
+            {true,  true,  false,  false, false,  true,  false,  false, false,  true,  false },
+            {true,  false, true,  false, true,  false, true,  false, true,  false, true },
+            {true,  false, true,  false, true,  true,  true,  false, true,  true,  true },
+            {true,  false, true,  false, true,  false, true,  false, true,  false, true },
+            {true,  true,  false,  false, true,  false, true,  false, true,  false, true },
+            {false, false, false, false, false, false, false, false, false, false, false},
+            {false, false, false, false, false, false, false, false, false, false, false}
     };
-    int tileToBeDragged, tileToBeReplaced, notTile = R.drawable.ic_launcher_background, interval = 300, score = 0;
+    int tileToBeDragged, tileToBeReplaced;
+    int notTile = R.drawable.ic_launcher_background;
     Handler mHandler;
-    Button btnReset;
+    int interval = 300;
+    Button btnReset3;
     TextView scoreRes;
+    int score = 0;
     boolean swiped = false;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_level2);
-        tvMoves = findViewById(R.id.moves2);
-        scoreRes = findViewById(R.id.score2);
-        btnReset = findViewById(R.id.reset2);
+        setContentView(R.layout.activity_level3);
+        tvMoves = findViewById(R.id.moves3);
+        scoreRes = findViewById(R.id.score3);
+        btnReset3 = findViewById(R.id.reset3);
 
         DisplayMetrics dm = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(dm);
@@ -57,7 +70,7 @@ public class Level2 extends AppCompatActivity {
         heightofScreen = dm.heightPixels;
         widthOfBlock = widthOfScreen / noOfBlocks;
 
-        createBoard();
+        createboard();
         mHandler = new Handler();
         startRepeat();
 
@@ -108,29 +121,18 @@ public class Level2 extends AppCompatActivity {
                 }
             });
         }
-        btnReset.setOnClickListener(new View.OnClickListener() {
+        btnReset3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Level2.this, Level2.class);
+                Intent intent = new Intent(Level3.this, Level3.class);
                 finish();
                 startActivity(intent);
             }
         });
     }
 
-
-
-    private void handleSwipe(ImageView imageView, int targetTileId) {
-        tileToBeDragged = imageView.getId();
-        tileToBeReplaced = targetTileId;
-        if (isValidSwap(tileToBeDragged, tileToBeReplaced)) {
-            swiped = true;
-            candyInterchange();
-        }
-    }
-
-    private void createBoard() {
-        GridLayout gridLayout = findViewById(R.id.board2);
+    private void createboard() {
+        GridLayout gridLayout = findViewById(R.id.board3);
         gridLayout.setRowCount(noOfBlocks);
         gridLayout.setColumnCount(noOfBlocks);
         gridLayout.getLayoutParams().width = widthOfScreen;
@@ -148,7 +150,7 @@ public class Level2 extends AppCompatActivity {
             int row = i / noOfBlocks;
             int col = i % noOfBlocks;
 
-            if (row < crossPattern.length && col < crossPattern[row].length && crossPattern[row][col]) {
+            if (row < pattern.length && col < pattern[row].length && pattern[row][col]) {
                 int rand;
                 do {
                     rand = random.nextInt(tiles.length);
@@ -164,7 +166,7 @@ public class Level2 extends AppCompatActivity {
             gridLayout.addView(imageView);
         }
 
-        Log.d("Level2", "Board created with specified pattern");
+        Log.d("Level3", "Board created with specified pattern");
     }
     private boolean hasInitialMatches(int index, int drawable) {
         int row = index / noOfBlocks;
@@ -183,10 +185,14 @@ public class Level2 extends AppCompatActivity {
         }
         return false;
     }
+
     private boolean isValidSwap(int tileDragged, int tileReplaced) {
-        int rowDragged = tileDragged / noOfBlocks, colDragged = tileDragged % noOfBlocks;
-        int rowReplaced = tileReplaced / noOfBlocks, colReplaced = tileReplaced % noOfBlocks;
-        return crossPattern[rowDragged][colDragged] && crossPattern[rowReplaced][colReplaced];
+        int rowDragged = tileDragged / noOfBlocks;
+        int colDragged = tileDragged % noOfBlocks;
+        int rowReplaced = tileReplaced / noOfBlocks;
+        int colReplaced = tileReplaced % noOfBlocks;
+
+        return pattern[rowDragged][colDragged] && pattern[rowReplaced][colReplaced];
     }
 
     private void candyInterchange() {
@@ -238,10 +244,11 @@ public class Level2 extends AppCompatActivity {
     }
 
     private void checkRowForThree() {
-        for (int i = 0; i < 61; i++) {
+        for (int i = 0; i < 118; i++) {
             int chosenTile = (int) tile.get(i).getTag();
             boolean isBlank = (int) tile.get(i).getTag() == notTile;
-            Integer[] notValid = {6,7,14,15,22,23,30,31,38,39,46,47,54,55};List<Integer> list = Arrays.asList(notValid);
+            Integer[] notValid = {8, 9, 10, 19, 20, 21, 30, 31, 32, 41, 42, 43, 52, 53, 54, 63, 64, 65, 74, 75, 76, 85, 86, 87, 96, 97, 98, 107, 108, 109};
+            List<Integer> list = Arrays.asList(notValid);
             if (!list.contains(i)) {
                 int x = i;
                 if ((int) tile.get(x++).getTag() == chosenTile && !isBlank &&
@@ -262,12 +269,11 @@ public class Level2 extends AppCompatActivity {
         }
     }
 
-
     private void checkRowForFour() {
-        for (int i = 0; i < 60; i++) {
+        for (int i = 0; i < 117; i++) {
             int chosenTile = (int) tile.get(i).getTag();
             boolean isBlank = (int) tile.get(i).getTag() == notTile;
-            Integer[] notValid = {6,7,14,15,22,23,30,31,38,39,46,47,54,55};
+            Integer[] notValid = {8, 9, 10, 19, 20, 21, 30, 31, 32, 41, 42, 43, 52, 53, 54, 63, 64, 65, 74, 75, 76, 85, 86, 87, 96, 97, 98, 107, 108, 109};
             List<Integer> list = Arrays.asList(notValid);
             if (!list.contains(i)) {
                 int x = i;
@@ -294,10 +300,10 @@ public class Level2 extends AppCompatActivity {
     }
 
     private void checkRowForFive() {
-        for (int i = 0; i < 59; i++) {
+        for (int i = 0; i < 116; i++) {
             int chosenTile = (int) tile.get(i).getTag();
             boolean isBlank = (int) tile.get(i).getTag() == notTile;
-            Integer[] notValid = {6,7,14,15,22,23,30,31,38,39,46,47,54,55};
+            Integer[] notValid = {7, 8, 9, 10, 18, 19, 20, 21, 29, 30, 31, 32, 40, 41, 42, 43, 51, 52, 53, 54, 62, 63, 64, 65, 73, 74, 75, 76, 84, 85, 86, 87, 95, 96, 97, 98, 106, 107, 108, 109};
             List<Integer> list = Arrays.asList(notValid);
             if (!list.contains(i)) {
                 int x = i;
@@ -328,7 +334,7 @@ public class Level2 extends AppCompatActivity {
     }
 
     private void checkColumnForThree() {
-        for (int i = 0; i < 48; i++) {
+        for (int i = 0; i < 77; i++) {
             int chosenTile = (int) tile.get(i).getTag();
             boolean isBlank = (int) tile.get(i).getTag() == notTile;
             int x = i;
@@ -350,7 +356,7 @@ public class Level2 extends AppCompatActivity {
     }
 
     private void checkColumnForFour() {
-        for (int i = 0; i < 40; i++) {
+        for (int i = 0; i < 66; i++) {
             int chosenTile = (int) tile.get(i).getTag();
             boolean isBlank = (int) tile.get(i).getTag() == notTile;
             int x = i;
@@ -376,7 +382,7 @@ public class Level2 extends AppCompatActivity {
     }
 
     private void checkColumnForFive() {
-        for (int i = 0; i < 32; i++) {
+        for (int i = 0; i < 55; i++) {
             int chosenTile = (int) tile.get(i).getTag();
             boolean isBlank = (int) tile.get(i).getTag() == notTile;
             int x = i;
@@ -406,12 +412,12 @@ public class Level2 extends AppCompatActivity {
     }
 
     private void moveDownTiles() {
-        int numRows = crossPattern.length;
-        int numCols = crossPattern[0].length;
+        int numRows = pattern.length;
+        int numCols = pattern[0].length;
 
         for (int row = numRows - 2; row >= 0; row--) {
             for (int col = 0; col < numCols; col++) {
-                if (crossPattern[row][col] && crossPattern[row + 1][col]) {
+                if (pattern[row][col] && pattern[row + 1][col]) {
                     int currentIndex = row * noOfBlocks + col;
                     int belowIndex = (row + 1) * noOfBlocks + col;
 
@@ -427,7 +433,7 @@ public class Level2 extends AppCompatActivity {
 
         for (int row = 0; row < numRows; row++) {
             for (int col = 0; col < numCols; col++) {
-                if (crossPattern[row][col]) {
+                if (pattern[row][col]) {
                     int currentIndex = row * noOfBlocks + col;
                     if ((int) tile.get(currentIndex).getTag() == notTile) {
                         int rand = (int) Math.floor(Math.random() * tiles.length);
