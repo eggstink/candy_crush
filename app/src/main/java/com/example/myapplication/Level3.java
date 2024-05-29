@@ -129,6 +129,7 @@ public class Level3 extends AppCompatActivity {
         btnReset3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                music3.stop();
                 Intent intent = new Intent(Level3.this, Level3.class);
                 finish();
                 startActivity(intent);
