@@ -28,7 +28,8 @@ import java.util.Random;
 
 public class Level1 extends AppCompatActivity {
     TextView tvMoves;
-    MediaPlayer music;
+    MediaPlayer music,pop;
+
     int[] tiles = {
             R.drawable.diamond,
             R.drawable.gold,
@@ -59,6 +60,9 @@ public class Level1 extends AppCompatActivity {
         music = MediaPlayer.create(Level1.this,R.raw.lvl1);
         music.setLooping(true);
         music.start();
+
+        pop = MediaPlayer.create(Level1.this,R.raw.matchpop);
+        pop.setLooping(false);
 
         scoreRes = findViewById(R.id.score);
         numOfMoves = findViewById(R.id.score);
@@ -146,7 +150,7 @@ public class Level1 extends AppCompatActivity {
                 int x = i;
                 if((int)tile.get(x++).getTag()==chosenTile&&!isBlank&&(int)tile.get(x++).getTag()==chosenTile
                         &&(int) tile.get(x).getTag()==chosenTile){
-                    score += 1;
+                    score += 3;
                     scoreRes.setText(String.valueOf(score));
                     tile.get(x).setImageResource(notTile);
                     tile.get(x).setTag(notTile);
@@ -156,6 +160,7 @@ public class Level1 extends AppCompatActivity {
                     x--;
                     tile.get(x).setImageResource(notTile);
                     tile.get(x).setTag(notTile);
+                    pop.start();
                     if(swiped == true){
                         tvMoves.setText("" + maxNumOfMoves--);
                     }
@@ -179,7 +184,7 @@ public class Level1 extends AppCompatActivity {
                 if ((int) tile.get(x++).getTag() == chosenTile && !isBlank &&
                         (int) tile.get(x++).getTag() == chosenTile &&
                         (int) tile.get(x++).getTag() == chosenTile) {
-                    score += 2;
+                    score += 4;
                     scoreRes.setText(String.valueOf(score));
                     tile.get(x).setImageResource(notTile);
                     tile.get(x).setTag(notTile);
@@ -192,6 +197,7 @@ public class Level1 extends AppCompatActivity {
                     x--;
                     tile.get(x).setImageResource(notTile);
                     tile.get(x).setTag(notTile);
+                    pop.start();
                     if (swiped) {
                         tvMoves.setText("" + maxNumOfMoves--);
                     }
@@ -216,7 +222,7 @@ public class Level1 extends AppCompatActivity {
                         (int) tile.get(x++).getTag() == chosenTile &&
                         (int) tile.get(x++).getTag() == chosenTile &&
                         (int) tile.get(x).getTag() == chosenTile) {
-                    score += 3;
+                    score += 5;
                     scoreRes.setText(String.valueOf(score));
                     tile.get(x).setImageResource(notTile);
                     tile.get(x).setTag(notTile);
@@ -232,6 +238,7 @@ public class Level1 extends AppCompatActivity {
                     x--;
                     tile.get(x).setImageResource(notTile);
                     tile.get(x).setTag(notTile);
+                    pop.start();
                     if (swiped) {
                         tvMoves.setText("" + maxNumOfMoves--);
                     }
@@ -252,7 +259,7 @@ public class Level1 extends AppCompatActivity {
                     (int)tile.get(x+noOfBlocks).getTag()==chosenTile
                     &&(int) tile.get(x+2*noOfBlocks).getTag()==chosenTile){
 
-                score += 1;
+                score += 3;
                 scoreRes.setText(String.valueOf(score));
                 tile.get(x).setImageResource(notTile);
                 tile.get(x).setTag(notTile);
@@ -262,6 +269,7 @@ public class Level1 extends AppCompatActivity {
                 x+= +noOfBlocks;
                 tile.get(x).setImageResource(notTile);
                 tile.get(x).setTag(notTile);
+                pop.start();
                 if(swiped == true){
                     tvMoves.setText("" + maxNumOfMoves--);
                 }
@@ -281,7 +289,7 @@ public class Level1 extends AppCompatActivity {
                     (int) tile.get(x + noOfBlocks).getTag() == chosenTile &&
                     (int) tile.get(x + 2 * noOfBlocks).getTag() == chosenTile &&
                     (int) tile.get(x + 3 * noOfBlocks).getTag() == chosenTile) {
-                score += 1;
+                score += 4;
                 scoreRes.setText(String.valueOf(score));
                 tile.get(x).setImageResource(notTile);
                 tile.get(x).setTag(notTile);
@@ -294,6 +302,7 @@ public class Level1 extends AppCompatActivity {
                 x += noOfBlocks;
                 tile.get(x).setImageResource(notTile);
                 tile.get(x).setTag(notTile);
+                pop.start();
                 if (swiped) {
                     tvMoves.setText("" + maxNumOfMoves--);
                 }
@@ -314,7 +323,7 @@ public class Level1 extends AppCompatActivity {
                     (int) tile.get(x + 2 * noOfBlocks).getTag() == chosenTile &&
                     (int) tile.get(x + 3 * noOfBlocks).getTag() == chosenTile &&
                     (int) tile.get(x + 4 * noOfBlocks).getTag() == chosenTile) {
-                score += 1;
+                score += 5;
                 scoreRes.setText(String.valueOf(score));
                 tile.get(x).setImageResource(notTile);
                 tile.get(x).setTag(notTile);
@@ -330,6 +339,7 @@ public class Level1 extends AppCompatActivity {
                 x += noOfBlocks;
                 tile.get(x).setImageResource(notTile);
                 tile.get(x).setTag(notTile);
+                pop.start();
                 if (swiped) {
                     tvMoves.setText("" + maxNumOfMoves--);
                 }
@@ -408,7 +418,7 @@ public class Level1 extends AppCompatActivity {
                     tile.get(tileToBeDraged).setTag(background1);
                     tile.get(tileToBeReplaced).setTag(background);
                 }
-            }, 250);
+            }, 500);
 
             swiped = false;
 
@@ -476,7 +486,10 @@ public class Level1 extends AppCompatActivity {
     private void checkWinCondition() {
         if (score >= 50) {
             Toast.makeText(this, "You win!", Toast.LENGTH_SHORT).show();
+            finish();
+            music.stop();
             startActivity(new Intent(Level1.this, SelectLvlActivity.class));
+
         }
     }
 

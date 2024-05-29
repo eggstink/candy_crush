@@ -33,7 +33,7 @@ public class Level3 extends AppCompatActivity {
             R.drawable.redstone,
     };
 
-    int maxNumOfMoves = 50;
+    int maxNumOfMoves = 10;
     int widthOfBlock, noOfBlocks = 11, widthOfScreen, heightofScreen;
     ArrayList<ImageView> tile = new ArrayList<>();
     private boolean[][] pattern = {
@@ -49,7 +49,7 @@ public class Level3 extends AppCompatActivity {
     };
     int tileToBeDragged, tileToBeReplaced;
     int notTile = R.drawable.ic_launcher_background;
-    MediaPlayer music3;
+    MediaPlayer music3,pop;
     Handler mHandler;
     int interval = 300;
     Button btnReset3;
@@ -68,6 +68,7 @@ public class Level3 extends AppCompatActivity {
         music3 = MediaPlayer.create(Level3.this,R.raw.daa);
         music3.setLooping(true);
         music3.start();
+        pop = MediaPlayer.create(Level3.this,R.raw.matchpop);
 
         DisplayMetrics dm = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(dm);
@@ -260,7 +261,7 @@ public class Level3 extends AppCompatActivity {
                 if ((int) tile.get(x++).getTag() == chosenTile && !isBlank &&
                         (int) tile.get(x++).getTag() == chosenTile &&
                         (int) tile.get(x).getTag() == chosenTile) {
-                    score += 1;
+                    score += 3;
                     scoreRes.setText(String.valueOf(score));
                     tile.get(x).setImageResource(notTile);
                     tile.get(x).setTag(notTile);
@@ -270,6 +271,7 @@ public class Level3 extends AppCompatActivity {
                     x--;
                     tile.get(x).setImageResource(notTile);
                     tile.get(x).setTag(notTile);
+                    pop.start();
                 }
             }
         }
@@ -288,7 +290,7 @@ public class Level3 extends AppCompatActivity {
                         (int) tile.get(x++).getTag() == chosenTile &&
                         (int) tile.get(x++).getTag() == chosenTile &&
                         (int) tile.get(x).getTag() == chosenTile) {
-                    score += 1;
+                    score += 4;
                     scoreRes.setText(String.valueOf(score));
                     tile.get(x).setImageResource(notTile);
                     tile.get(x).setTag(notTile);
@@ -301,6 +303,7 @@ public class Level3 extends AppCompatActivity {
                     x--;
                     tile.get(x).setImageResource(notTile);
                     tile.get(x).setTag(notTile);
+                    pop.start();
                 }
             }
         }
@@ -320,7 +323,7 @@ public class Level3 extends AppCompatActivity {
                         (int) tile.get(x++).getTag() == chosenTile &&
                         (int) tile.get(x++).getTag() == chosenTile &&
                         (int) tile.get(x).getTag() == chosenTile) {
-                    score += 1;
+                    score += 5;
                     scoreRes.setText(String.valueOf(score));
                     tile.get(x).setImageResource(notTile);
                     tile.get(x).setTag(notTile);
@@ -336,6 +339,7 @@ public class Level3 extends AppCompatActivity {
                     x--;
                     tile.get(x).setImageResource(notTile);
                     tile.get(x).setTag(notTile);
+                    pop.start();
                 }
             }
         }
@@ -350,7 +354,7 @@ public class Level3 extends AppCompatActivity {
             if ((int) tile.get(x).getTag() == chosenTile && !isBlank &&
                     (int) tile.get(x + noOfBlocks).getTag() == chosenTile &&
                     (int) tile.get(x + 2 * noOfBlocks).getTag() == chosenTile) {
-                score += 1;
+                score += 3;
                 scoreRes.setText(String.valueOf(score));
                 tile.get(x).setImageResource(notTile);
                 tile.get(x).setTag(notTile);
@@ -360,6 +364,7 @@ public class Level3 extends AppCompatActivity {
                 x = x + noOfBlocks;
                 tile.get(x).setImageResource(notTile);
                 tile.get(x).setTag(notTile);
+                pop.start();
             }
         }
         checkWinCondition();
@@ -374,7 +379,7 @@ public class Level3 extends AppCompatActivity {
                     (int) tile.get(x + noOfBlocks).getTag() == chosenTile &&
                     (int) tile.get(x + 2 * noOfBlocks).getTag() == chosenTile &&
                     (int) tile.get(x + 3 * noOfBlocks).getTag() == chosenTile) {
-                score += 1;
+                score += 4;
                 scoreRes.setText(String.valueOf(score));
                 tile.get(x).setImageResource(notTile);
                 tile.get(x).setTag(notTile);
@@ -387,6 +392,7 @@ public class Level3 extends AppCompatActivity {
                 x = x + noOfBlocks;
                 tile.get(x).setImageResource(notTile);
                 tile.get(x).setTag(notTile);
+                pop.start();
             }
         }
         checkWinCondition();
@@ -402,7 +408,7 @@ public class Level3 extends AppCompatActivity {
                     (int) tile.get(x + 2 * noOfBlocks).getTag() == chosenTile &&
                     (int) tile.get(x + 3 * noOfBlocks).getTag() == chosenTile &&
                     (int) tile.get(x + 4 * noOfBlocks).getTag() == chosenTile) {
-                score += 1;
+                score += 5;
                 scoreRes.setText(String.valueOf(score));
                 tile.get(x).setImageResource(notTile);
                 tile.get(x).setTag(notTile);
@@ -418,6 +424,7 @@ public class Level3 extends AppCompatActivity {
                 x = x + noOfBlocks;
                 tile.get(x).setImageResource(notTile);
                 tile.get(x).setTag(notTile);
+                pop.start();
             }
         }
         checkWinCondition();
@@ -472,8 +479,10 @@ public class Level3 extends AppCompatActivity {
     }
 
     private void checkWinCondition() {
-        if (score >= 100) {
+        if (score >= 10) {
             Toast.makeText(this, "You win!", Toast.LENGTH_SHORT).show();
+            finish();
+            music3.stop();
             startActivity(new Intent(Level3.this, SelectLvlActivity.class));
         }
     }
