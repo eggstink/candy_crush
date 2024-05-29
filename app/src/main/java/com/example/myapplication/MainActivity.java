@@ -2,6 +2,7 @@ package com.example.myapplication;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -29,12 +30,16 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     Button btnLvl1, btnLogin;
+    MediaPlayer music;
     VideoView videoView;
     @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        music = MediaPlayer.create(MainActivity.this,R.raw.menu);
+        music.setLooping(true);
+        music.start();
 
         btnLvl1 = (Button)findViewById(R.id.btnLevel1);
         btnLogin = findViewById(R.id.btnLogin);
@@ -50,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
         btnLvl1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                music.stop();
                 Intent intent1 = new Intent(MainActivity.this, Level1.class);
                 startActivity(intent1);
             }

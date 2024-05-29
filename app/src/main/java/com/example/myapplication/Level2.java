@@ -2,6 +2,7 @@ package com.example.myapplication;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.DisplayMetrics;
@@ -21,6 +22,7 @@ import java.util.Random;
 
 public class Level2 extends AppCompatActivity {
     TextView tvMoves;
+    MediaPlayer music2;
     int[] tiles = {
             R.drawable.diamond, R.drawable.gold, R.drawable.iron, R.drawable.lapis, R.drawable.netherite, R.drawable.redstone
     };
@@ -47,6 +49,11 @@ public class Level2 extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_level2);
+
+        music2 = MediaPlayer.create(Level2.this,R.raw.lvl2music);
+        music2.setLooping(true);
+        music2.start();
+
         tvMoves = findViewById(R.id.moves2);
         scoreRes = findViewById(R.id.score2);
         btnReset = findViewById(R.id.reset2);
