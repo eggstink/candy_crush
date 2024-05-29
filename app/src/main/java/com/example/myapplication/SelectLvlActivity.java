@@ -49,7 +49,7 @@ public class SelectLvlActivity extends AppCompatActivity {
             }, 200);
         });
         btnLvl2.setOnClickListener(view->{
-            btnLvl2.setImageResource(R.drawable.btnlvl2_pressed);
+            btnLvl2.setImageResource(R.drawable.btnlvl2_pressedv2);
             new Handler().postDelayed(() -> {
                 music.stop();
                 forward.start();
@@ -60,7 +60,7 @@ public class SelectLvlActivity extends AppCompatActivity {
             }, 200);
         });
         btnLvl3.setOnClickListener(view->{
-            btnLvl3.setImageResource(R.drawable.btnlvl3_pressed);
+            btnLvl3.setImageResource(R.drawable.btnlvl3_pressedv2);
             new Handler().postDelayed(() -> {
                 music.stop();
                 forward.start();
