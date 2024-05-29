@@ -61,7 +61,7 @@ public class Level3 extends AppCompatActivity {
     Handler mHandler;
     int interval = 300;
     Button btnReset3;
-    Button btnExit, btnContinue, btnExit2;
+    Button btnExit, btnContinue, btnExit2, btnExitGame3;
     Dialog dialog, scoreDialog;
     TextView scoreRes, finalScore;
     int score = 0;
@@ -94,6 +94,7 @@ public class Level3 extends AppCompatActivity {
         btnContinue = dialog.findViewById(R.id.btnContinue);
         btnExit2 = scoreDialog.findViewById(R.id.btnExit2);
         finalScore = scoreDialog.findViewById(R.id.tvScore);
+        btnExitGame3 = findViewById(R.id.btnExitGame3);
 
         DisplayMetrics dm = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(dm);
@@ -152,6 +153,13 @@ public class Level3 extends AppCompatActivity {
                 }
             });
         }
+
+        btnExitGame3.setOnClickListener(view->{
+            finalScore.setText(String.valueOf(score));
+            scoreDialog.show();
+            endCheckers();
+        });
+
         btnReset3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -563,74 +571,14 @@ public class Level3 extends AppCompatActivity {
         }
     }
     private void endCheckers(){
-
         btnExit2.setOnClickListener(view->{
-
-            firestore = FirebaseFirestore.getInstance();
-            String currUser = FirebaseAuth.getInstance().getUid();
-
-            firestore.collection("users").document(currUser).get().addOnSuccessListener(documentSnapshot -> {
-                        if (documentSnapshot.exists()) {
-                            int highestScore = documentSnapshot.getLong("highestScore").intValue();
-                            Log.d("TAG", "Highest score retrieved successfully: " + highestScore);
-
-                            if (score > highestScore) {
-                                firestore.collection("users").document(currUser).update("highestScore", score).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                    @Override
-                                    public void onSuccess(Void unused) {
-                                        Log.d("TAG", "Highest score updated successfully");
-                                    }
-                                }).addOnFailureListener(new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@NonNull Exception e) {
-                                        Log.e("TAG", "Error updating highest score", e);
-                                    }
-                                });
-                            }
-                        } else {
-                            Log.d("TAG", "User document does not exist");
-                        }
-                    })
-                    .addOnFailureListener(e -> {
-                        Log.e("TAG", "Error retrieving highest score", e);
-                    });
-
+            insertScore();
             finish();
             music3.stop();
             startActivity(new Intent(Level3.this, SelectLvlActivity.class));
         });
-
         btnExit.setOnClickListener(view->{
-
-            firestore = FirebaseFirestore.getInstance();
-            String currUser = FirebaseAuth.getInstance().getUid();
-
-            firestore.collection("users").document(currUser).get().addOnSuccessListener(documentSnapshot -> {
-                        if (documentSnapshot.exists()) {
-                            int highestScore = documentSnapshot.getLong("highestScore").intValue();
-                            Log.d("TAG", "Highest score retrieved successfully: " + highestScore);
-
-                            if (score > highestScore) {
-                                firestore.collection("users").document(currUser).update("highestScore", score).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                    @Override
-                                    public void onSuccess(Void unused) {
-                                        Log.d("TAG", "Highest score updated successfully");
-                                    }
-                                }).addOnFailureListener(new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@NonNull Exception e) {
-                                        Log.e("TAG", "Error updating highest score", e);
-                                    }
-                                });
-                            }
-                        } else {
-                            Log.d("TAG", "User document does not exist");
-                        }
-                    })
-                    .addOnFailureListener(e -> {
-                        Log.e("TAG", "Error retrieving highest score", e);
-                    });
-
+            insertScore();
             finish();
             music3.stop();
             startActivity(new Intent(Level3.this, SelectLvlActivity.class));
@@ -639,5 +587,37 @@ public class Level3 extends AppCompatActivity {
             hasWon = true;
             dialog.dismiss();
         });
+    }
+
+    private void insertScore(){
+
+        firestore = FirebaseFirestore.getInstance();
+        String currUser = FirebaseAuth.getInstance().getUid();
+
+        firestore.collection("users").document(currUser).get().addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists()) {
+                        int highestScore = documentSnapshot.getLong("highestScore").intValue();
+                        Log.d("TAG", "Highest score retrieved successfully: " + highestScore);
+
+                        if (score > highestScore) {
+                            firestore.collection("users").document(currUser).update("highestScore", score).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void unused) {
+                                    Log.d("TAG", "Highest score updated successfully");
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Log.e("TAG", "Error updating highest score", e);
+                                }
+                            });
+                        }
+                    } else {
+                        Log.d("TAG", "User document does not exist");
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    Log.e("TAG", "Error retrieving highest score", e);
+                });
     }
 }
