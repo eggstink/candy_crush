@@ -19,10 +19,12 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
@@ -33,7 +35,7 @@ import java.util.Random;
 public class Level1 extends AppCompatActivity {
     TextView tvMoves;
     MediaPlayer music,pop;
-    Button btnExit, btnContinue, btnExit2, btnExitGame, reset;
+    Button btnExit, btnContinue, btnExit2, btnLeaderboard, btnExitGame, reset;
     Dialog dialog, scoreDialog;
     FirebaseFirestore firestore;
 
@@ -80,6 +82,7 @@ public class Level1 extends AppCompatActivity {
         pop = MediaPlayer.create(Level1.this,R.raw.matchpop);
         pop.setLooping(false);
 
+
         dialog = new Dialog(Level1.this);
         dialog.setContentView(R.layout.confirm_dialog);
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -93,6 +96,7 @@ public class Level1 extends AppCompatActivity {
         btnExit = dialog.findViewById(R.id.btnExit);
         btnContinue = dialog.findViewById(R.id.btnContinue);
         btnExit2 = scoreDialog.findViewById(R.id.btnExit2);
+        btnLeaderboard = scoreDialog.findViewById(R.id.btnLeaderboard);
         finalScore = scoreDialog.findViewById(R.id.tvScore);
 
         scoreRes = findViewById(R.id.score);
@@ -605,6 +609,17 @@ public class Level1 extends AppCompatActivity {
             startActivity(new Intent(Level1.this, SelectLvlActivity.class));
         });
 
+        btnLeaderboard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                scoreDialog.dismiss();
+                findViewById(R.id.background_overlay).setVisibility(View.VISIBLE);
+                LeaderboardFragment leaderboardFragment = new LeaderboardFragment();
+                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                transaction.add(android.R.id.content, leaderboardFragment).addToBackStack(null).commit();
+            }
+        });
+
         btnExit.setOnClickListener(view->{
             insertScore();
             finish();
@@ -621,31 +636,32 @@ public class Level1 extends AppCompatActivity {
         firestore = FirebaseFirestore.getInstance();
         String currUser = FirebaseAuth.getInstance().getUid();
 
-        firestore.collection("users").document(currUser).get().addOnSuccessListener(documentSnapshot -> {
-                    if (documentSnapshot.exists()) {
-                        int highestScore = documentSnapshot.getLong("highestScore").intValue();
-                        Log.d("TAG", "Highest score retrieved successfully: " + highestScore);
+        DocumentReference docref = firestore.collection("users").document(currUser).collection("highestScores").document("level1");
+        docref.get().addOnSuccessListener(documentSnapshot -> {
+            if (documentSnapshot.exists()) {
+                int highestScore = documentSnapshot.getLong("highestScore").intValue();
+                Log.d("TAG", "Highest score retrieved successfully: " + highestScore);
 
-                        if(score > highestScore) {
-                            firestore.collection("users").document(currUser).update("highestScore", score).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                @Override
-                                public void onSuccess(Void unused) {
-                                    Log.d("TAG", "Highest score updated successfully");
-                                }
-                            }).addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    Log.e("TAG", "Error updating highest score", e);
-                                }
-                            });
+                if(score > highestScore) {
+                    docref.update("highestScore", score).addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void unused) {
+                            Log.d("TAG", "Highest score updated successfully");
                         }
-                    } else {
-                        Log.d("TAG", "User document does not exist");
-                    }
-                })
-                .addOnFailureListener(e -> {
-                    Log.e("TAG", "Error retrieving highest score", e);
-                });
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.e("TAG", "Error updating highest score", e);
+                        }
+                    });
+                }
+            } else {
+                Log.d("TAG", "User document does not exist");
+            }
+        })
+        .addOnFailureListener(e -> {
+            Log.e("TAG", "Error retrieving highest score", e);
+        });
     }
     private void checkWinCondition() {
         if (score >= 50 && !hasWon) {

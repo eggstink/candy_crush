@@ -9,4 +9,6 @@
     <string name="signup_header"> Create your One Account </string>
     <string name="signup_login"> Already have an account? Log In </string>
     <string name="signup_signup"> Sign Up </string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

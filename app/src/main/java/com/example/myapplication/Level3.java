@@ -23,6 +23,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
@@ -620,30 +621,31 @@ public class Level3 extends AppCompatActivity {
         firestore = FirebaseFirestore.getInstance();
         String currUser = FirebaseAuth.getInstance().getUid();
 
-        firestore.collection("users").document(currUser).get().addOnSuccessListener(documentSnapshot -> {
-                    if (documentSnapshot.exists()) {
-                        int highestScore = documentSnapshot.getLong("highestScore").intValue();
-                        Log.d("TAG", "Highest score retrieved successfully: " + highestScore);
+        DocumentReference docref = firestore.collection("users").document(currUser).collection("highestScores").document("level3");
+        docref.get().addOnSuccessListener(documentSnapshot -> {
+            if (documentSnapshot.exists()) {
+                int highestScore = documentSnapshot.getLong("highestScore").intValue();
+                Log.d("TAG", "Highest score retrieved successfully: " + highestScore);
 
-                        if (score > highestScore) {
-                            firestore.collection("users").document(currUser).update("highestScore", score).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                @Override
-                                public void onSuccess(Void unused) {
-                                    Log.d("TAG", "Highest score updated successfully");
-                                }
-                            }).addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    Log.e("TAG", "Error updating highest score", e);
-                                }
-                            });
+                if (score > highestScore) {
+                    firestore.collection("users").document(currUser).update("highestScore", score).addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void unused) {
+                            Log.d("TAG", "Highest score updated successfully");
                         }
-                    } else {
-                        Log.d("TAG", "User document does not exist");
-                    }
-                })
-                .addOnFailureListener(e -> {
-                    Log.e("TAG", "Error retrieving highest score", e);
-                });
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.e("TAG", "Error updating highest score", e);
+                        }
+                    });
+                }
+            } else {
+                Log.d("TAG", "User document does not exist");
+            }
+        })
+        .addOnFailureListener(e -> {
+            Log.e("TAG", "Error retrieving highest score", e);
+        });
     }
 }
