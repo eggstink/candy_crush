@@ -15,6 +15,7 @@ public class MainActivity extends AppCompatActivity {
 
     Button btnStart, btnLogin;
     MediaPlayer music;
+    MediaPlayer forward;
     VideoView videoView;
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -22,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         music = MediaPlayer.create(MainActivity.this,R.raw.menu);
+        forward = MediaPlayer.create(MainActivity.this,R.raw.clickbuttonforwardsfx);
         music.setLooping(true);
         music.start();
 
@@ -41,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 music.stop();
                 Intent intent1 = new Intent(MainActivity.this, SelectLvlActivity.class);
+                forward.start();
                 startActivity(intent1);
             }
         });
@@ -48,7 +51,9 @@ public class MainActivity extends AppCompatActivity {
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                music.stop();
                 Intent intentLogIn = new Intent(MainActivity.this, LogInActivity.class);
+                forward.start();
                 startActivity(intentLogIn);
             }
         });
