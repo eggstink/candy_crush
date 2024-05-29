@@ -21,33 +21,66 @@
         android:gravity="center">
 
         <Button
-            android:id="@+id/btnStart"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="50dp"
-            android:layout_marginTop="50dp"
-            android:backgroundTint="#FFE400"
-            android:fontFamily="@font/babel_gamee"
-            android:minWidth="200dp"
-            android:singleLine="true"
-            android:text="PLAY"
-            android:textColor="#2E2C2C"
-            android:textSize="60sp" /> <!-- Set a minimum width to ensure the text fits -->
-
-        <Button
             android:id="@+id/btnLogin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="50dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="50dp"
-            android:backgroundTint="#FFE400"
-            android:fontFamily="@font/game_paused"
-            android:minWidth="200dp"
-            android:singleLine="true"
+            android:onClick="login"
             android:text="Login"
-            android:textColor="#2E2C2C"
-            android:textSize="20sp" /> <!-- Set a minimum width to ensure the text fits -->
+            android:visibility="visible" />
+
+        <Button
+            android:id="@+id/btnRegister"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="register"
+            android:text="Register"
+            android:visibility="visible" />
+
+        <Button
+            android:id="@+id/btnStart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="startGame"
+            android:text="Start"
+            android:visibility="gone" />
+
+        <Button
+            android:id="@+id/btnLogout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="logout"
+            android:text="Logout"
+            android:visibility="gone" />
+
+
+<!--        <Button-->
+<!--            android:id="@+id/btnLogin"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginHorizontal="50dp"-->
+<!--            android:layout_marginTop="10dp"-->
+<!--            android:layout_marginBottom="50dp"-->
+<!--            android:backgroundTint="#FFE400"-->
+<!--            android:fontFamily="@font/game_paused"-->
+<!--            android:minWidth="200dp"-->
+<!--            android:singleLine="true"-->
+<!--            android:text="Login"-->
+<!--            android:textColor="#2E2C2C"-->
+<!--            android:textSize="20sp" />-->
+
+<!--        <Button-->
+<!--            android:id="@+id/btnRegister"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginHorizontal="50dp"-->
+<!--            android:layout_marginTop="50dp"-->
+<!--            android:backgroundTint="#FFE400"-->
+<!--            android:fontFamily="@font/babel_gamee"-->
+<!--            android:minWidth="200dp"-->
+<!--            android:singleLine="true"-->
+<!--            android:text="Register"-->
+<!--            android:textColor="#2E2C2C"-->
+<!--            android:textSize="60sp" /> &lt;!&ndash; Set a minimum width to ensure the text fits &ndash;&gt;-->
 
     </LinearLayout>
 

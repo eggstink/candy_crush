@@ -118,6 +118,7 @@ public class RegisterActivity extends AppCompatActivity {
                         user.put("firstName", firstname);
                         user.put("lastName", lastname);
 
+
                         docref.set(user)
                                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override

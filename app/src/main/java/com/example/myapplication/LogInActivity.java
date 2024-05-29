@@ -1,7 +1,9 @@
 package com.example.myapplication;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
@@ -81,7 +83,9 @@ public class LogInActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()) {
-                            startActivity(new Intent(LogInActivity.this, HomeActivity.class));
+                            String loggedUser = auth.getCurrentUser().getUid();
+                            saveUserID(loggedUser);
+                            startActivity(new Intent(LogInActivity.this, SelectLvlActivity.class));
                         } else {
                             Toast.makeText(LogInActivity.this, "You entered a wrong email/password", Toast.LENGTH_SHORT).show();
 //                            firestore.collection("users")
@@ -123,5 +127,12 @@ public class LogInActivity extends AppCompatActivity {
                 startActivity(intentToSign);
             }
         });
+    }
+
+    private void saveUserID(String userID) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString("loggedID", userID);
+        editor.apply();
     }
 }
