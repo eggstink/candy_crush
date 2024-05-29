@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "378475526782",
+    "project_id": "pix-crush-fbase",
+    "storage_bucket": "pix-crush-fbase.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:378475526782:android:34611d0bfcb6c459dbb62f",
+        "android_client_info": {
+          "package_name": "com.example.myapplication"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCBikG6UyRmpFuWzzf5sdw2GtkSdADa5c0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
