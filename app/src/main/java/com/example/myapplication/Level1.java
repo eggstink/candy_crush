@@ -351,32 +351,31 @@ public class Level1 extends AppCompatActivity {
     }
 
 
-    private void moveDownCandies(){
-        Integer[] firstRow = {0,1,2,3,4,5,6,7};
-        List<Integer> list = Arrays.asList(firstRow);
-        for(int i = 55; i >=0;i--){
-            if((int)tile.get(i+noOfBlocks).getTag()==notTile){
-                tile.get(i+noOfBlocks).setImageResource((int)tile.get(i).getTag());
-                tile.get(i+noOfBlocks).setTag(tile.get(i).getTag());
-                tile.get(i).setImageResource(notTile);
-                tile.get(i).setTag(notTile);
-
-                if(list.contains(i)&&(int)tile.get(i).getTag()==notTile){
-                    int randomColor = (int) Math.floor(Math.random()*tiles.length);
-                    tile.get(i).setImageResource(tiles[randomColor]);
-                    tile.get(i).setTag(tiles[randomColor]);
+    private void moveDownCandies() {
+        for (int col = 0; col < noOfBlocks; col++) {
+            int emptySpaces = 0;
+            for (int row = noOfBlocks - 1; row >= 0; row--) {
+                int index = row * noOfBlocks + col;
+                if ((int) tile.get(index).getTag() == notTile) {
+                    emptySpaces++;
+                } else if (emptySpaces > 0) {
+                    int newIndex = (row + emptySpaces) * noOfBlocks + col;
+                    tile.get(newIndex).setImageResource((int) tile.get(index).getTag());
+                    tile.get(newIndex).setTag(tile.get(index).getTag());
+                    tile.get(index).setImageResource(notTile);
+                    tile.get(index).setTag(notTile);
                 }
             }
-        }
-
-        for(int i = 0; i < 5; i++){
-            if((int) tile.get(i).getTag()==notTile){
-                int randomColor = (int) Math.floor(Math.random()*tiles.length);
-                tile.get(i).setImageResource(tiles[randomColor]);
-                tile.get(i).setTag(tiles[randomColor]);
+            // Fill in empty spaces at the top with random candies
+            for (int i = 0; i < emptySpaces; i++) {
+                int randomColor = (int) Math.floor(Math.random() * tiles.length);
+                int index = i * noOfBlocks + col;
+                tile.get(index).setImageResource(tiles[randomColor]);
+                tile.get(index).setTag(tiles[randomColor]);
             }
         }
     }
+
     Runnable repeatChecker = new Runnable() {
         @Override
         public void run() {

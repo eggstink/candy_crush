@@ -251,26 +251,29 @@ public class Level3 extends AppCompatActivity {
     }
 
     private void checkRowForThree() {
-        for (int i = 0; i < 118; i++) {
-            int chosenTile = (int) tile.get(i).getTag();
-            boolean isBlank = (int) tile.get(i).getTag() == notTile;
-            Integer[] notValid = {8, 9, 10, 19, 20, 21, 30, 31, 32, 41, 42, 43, 52, 53, 54, 63, 64, 65, 74, 75, 76, 85, 86, 87, 96, 97, 98, 107, 108, 109};
-            List<Integer> list = Arrays.asList(notValid);
-            if (!list.contains(i)) {
-                int x = i;
-                if ((int) tile.get(x++).getTag() == chosenTile && !isBlank &&
-                        (int) tile.get(x++).getTag() == chosenTile &&
-                        (int) tile.get(x).getTag() == chosenTile) {
+        for (int row = 2; row <= 6; row++) {
+            for (int col = 0; col <= 10; col++) {
+                int index = row * noOfBlocks + col;
+                int chosenTile = (int) tile.get(index).getTag();
+                boolean isBlank = (int) tile.get(index).getTag() == notTile;
+
+                int count = 0;
+                for (int k = 0; k < 3; k++) {
+                    if ((int) tile.get(index + k).getTag() == chosenTile && !isBlank) {
+                        count++;
+                    } else {
+                        count = 0;
+                        break;
+                    }
+                }
+
+                if (count == 3) {
                     score += 3;
                     scoreRes.setText(String.valueOf(score));
-                    tile.get(x).setImageResource(notTile);
-                    tile.get(x).setTag(notTile);
-                    x--;
-                    tile.get(x).setImageResource(notTile);
-                    tile.get(x).setTag(notTile);
-                    x--;
-                    tile.get(x).setImageResource(notTile);
-                    tile.get(x).setTag(notTile);
+                    for (int k = 0; k < 3; k++) {
+                        tile.get(index + k).setImageResource(notTile);
+                        tile.get(index + k).setTag(notTile);
+                    }
                     pop.start();
                 }
             }
@@ -278,29 +281,34 @@ public class Level3 extends AppCompatActivity {
         checkWinCondition();
     }
 
+
+
+
+
+
     private void checkRowForFour() {
         for (int i = 0; i < 117; i++) {
             int chosenTile = (int) tile.get(i).getTag();
             boolean isBlank = (int) tile.get(i).getTag() == notTile;
             Integer[] notValid = {8, 9, 10, 19, 20, 21, 30, 31, 32, 41, 42, 43, 52, 53, 54, 63, 64, 65, 74, 75, 76, 85, 86, 87, 96, 97, 98, 107, 108, 109};
             List<Integer> list = Arrays.asList(notValid);
-            if (!list.contains(i)) {
+            if (!list.contains(i % noOfBlocks)) {
                 int x = i;
-                if ((int) tile.get(x++).getTag() == chosenTile && !isBlank &&
-                        (int) tile.get(x++).getTag() == chosenTile &&
-                        (int) tile.get(x++).getTag() == chosenTile &&
-                        (int) tile.get(x).getTag() == chosenTile) {
+                if ((int) tile.get(x).getTag() == chosenTile && !isBlank &&
+                        (int) tile.get(x + 1).getTag() == chosenTile &&
+                        (int) tile.get(x + 2).getTag() == chosenTile &&
+                        (int) tile.get(x + 3).getTag() == chosenTile) {
                     score += 4;
                     scoreRes.setText(String.valueOf(score));
-                    tile.get(x).setImageResource(notTile);
-                    tile.get(x).setTag(notTile);
-                    x--;
-                    tile.get(x).setImageResource(notTile);
-                    tile.get(x).setTag(notTile);
-                    x--;
-                    tile.get(x).setImageResource(notTile);
-                    tile.get(x).setTag(notTile);
-                    x--;
+                    tile.get(x + 3).setImageResource(notTile);
+                    tile.get(x + 3).setTag(notTile);
+                    x++;
+                    tile.get(x + 2).setImageResource(notTile);
+                    tile.get(x + 2).setTag(notTile);
+                    x++;
+                    tile.get(x + 1).setImageResource(notTile);
+                    tile.get(x + 1).setTag(notTile);
+                    x++;
                     tile.get(x).setImageResource(notTile);
                     tile.get(x).setTag(notTile);
                     pop.start();
@@ -316,27 +324,27 @@ public class Level3 extends AppCompatActivity {
             boolean isBlank = (int) tile.get(i).getTag() == notTile;
             Integer[] notValid = {7, 8, 9, 10, 18, 19, 20, 21, 29, 30, 31, 32, 40, 41, 42, 43, 51, 52, 53, 54, 62, 63, 64, 65, 73, 74, 75, 76, 84, 85, 86, 87, 95, 96, 97, 98, 106, 107, 108, 109};
             List<Integer> list = Arrays.asList(notValid);
-            if (!list.contains(i)) {
+            if (!list.contains(i % noOfBlocks)) {
                 int x = i;
-                if ((int) tile.get(x++).getTag() == chosenTile && !isBlank &&
-                        (int) tile.get(x++).getTag() == chosenTile &&
-                        (int) tile.get(x++).getTag() == chosenTile &&
-                        (int) tile.get(x++).getTag() == chosenTile &&
-                        (int) tile.get(x).getTag() == chosenTile) {
+                if ((int) tile.get(x).getTag() == chosenTile && !isBlank &&
+                        (int) tile.get(x + 1).getTag() == chosenTile &&
+                        (int) tile.get(x + 2).getTag() == chosenTile &&
+                        (int) tile.get(x + 3).getTag() == chosenTile &&
+                        (int) tile.get(x + 4).getTag() == chosenTile) {
                     score += 5;
                     scoreRes.setText(String.valueOf(score));
-                    tile.get(x).setImageResource(notTile);
-                    tile.get(x).setTag(notTile);
-                    x--;
-                    tile.get(x).setImageResource(notTile);
-                    tile.get(x).setTag(notTile);
-                    x--;
-                    tile.get(x).setImageResource(notTile);
-                    tile.get(x).setTag(notTile);
-                    x--;
-                    tile.get(x).setImageResource(notTile);
-                    tile.get(x).setTag(notTile);
-                    x--;
+                    tile.get(x + 4).setImageResource(notTile);
+                    tile.get(x + 4).setTag(notTile);
+                    x++;
+                    tile.get(x + 3).setImageResource(notTile);
+                    tile.get(x + 3).setTag(notTile);
+                    x++;
+                    tile.get(x + 2).setImageResource(notTile);
+                    tile.get(x + 2).setTag(notTile);
+                    x++;
+                    tile.get(x + 1).setImageResource(notTile);
+                    tile.get(x + 1).setTag(notTile);
+                    x++;
                     tile.get(x).setImageResource(notTile);
                     tile.get(x).setTag(notTile);
                     pop.start();
@@ -345,6 +353,7 @@ public class Level3 extends AppCompatActivity {
         }
         checkWinCondition();
     }
+
 
     private void checkColumnForThree() {
         for (int i = 0; i < 77; i++) {
@@ -369,6 +378,8 @@ public class Level3 extends AppCompatActivity {
         }
         checkWinCondition();
     }
+
+
 
     private void checkColumnForFour() {
         for (int i = 0; i < 66; i++) {
