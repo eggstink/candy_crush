@@ -27,6 +27,11 @@
             android:fontFamily="@font/pixeboy_z8xgd"
             android:onClick="login"
             android:text="Login"
+            android:textSize="34sp"
+            android:shadowColor = "#000"
+            android:shadowDx = "-5"
+            android:shadowDy = "-5"
+            android:shadowRadius = "5"
             android:visibility="visible" />
 
         <Button
@@ -36,6 +41,11 @@
             android:fontFamily="@font/pixeboy_z8xgd"
             android:onClick="register"
             android:text="Register"
+            android:textSize="34sp"
+            android:shadowColor = "#000"
+            android:shadowDx = "-5"
+            android:shadowDy = "-5"
+            android:shadowRadius = "5"
             android:visibility="visible" />
 
         <Button
@@ -45,6 +55,11 @@
             android:fontFamily="@font/pixeboy_z8xgd"
             android:onClick="startGame"
             android:text="Start"
+            android:textSize="34sp"
+            android:shadowColor = "#000"
+            android:shadowDx = "-5"
+            android:shadowDy = "-5"
+            android:shadowRadius = "5"
             android:visibility="gone" />
 
         <Button
@@ -54,6 +69,11 @@
             android:fontFamily="@font/pixeboy_z8xgd"
             android:onClick="logout"
             android:text="Logout"
+            android:textSize="34sp"
+            android:shadowColor = "#000"
+            android:shadowDx = "-5"
+            android:shadowDy = "-5"
+            android:shadowRadius = "5"
             android:visibility="gone" />
 
 

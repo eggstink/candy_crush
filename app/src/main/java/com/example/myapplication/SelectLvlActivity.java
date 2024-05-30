@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 
@@ -12,9 +13,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.fragment.app.FragmentTransaction;
 
 public class SelectLvlActivity extends AppCompatActivity {
     ImageButton btnLvl1, btnLvl2, btnLvl3;
+    Button mainmenu;
     MediaPlayer music,forward;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +33,7 @@ public class SelectLvlActivity extends AppCompatActivity {
         btnLvl1 = findViewById(R.id.btnLvl1);
         btnLvl2 = findViewById(R.id.btnLvl2);
         btnLvl3 = findViewById(R.id.btnLvl3);
+        mainmenu = findViewById(R.id.btnmainMenu);
 
         music = MediaPlayer.create(SelectLvlActivity.this,R.raw.level_music);
         music.setLooping(true);
@@ -69,6 +73,15 @@ public class SelectLvlActivity extends AppCompatActivity {
                     startActivity(new Intent(SelectLvlActivity.this, Level3.class));
                 }, 100);
             }, 200);
+        });
+
+        mainmenu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                music.stop();
+                forward.start();
+                startActivity(new Intent(SelectLvlActivity.this, MainActivity.class));
+            }
         });
     }
 }

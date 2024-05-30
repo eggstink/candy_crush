@@ -20,6 +20,10 @@
         android:fontFamily="@font/pixeboy_z8xgd"
         android:gravity="center_horizontal"
         android:text="Target: 50"
+        android:shadowColor = "#000"
+        android:shadowDx = "-5"
+        android:shadowDy = "-5"
+        android:shadowRadius = "5"
         android:textSize="34sp" />
 
     <LinearLayout
@@ -30,7 +34,11 @@
         android:layout_marginEnd="20dp"
         android:gravity="center"
         android:orientation="horizontal"
-        android:padding="20dp">
+        android:padding="20dp"
+        android:shadowColor = "#000"
+        android:shadowDx = "-5"
+        android:shadowDy = "-5"
+        android:shadowRadius = "5">
 
         <TextView
             android:layout_width="wrap_content"
@@ -49,6 +57,10 @@
             android:fontFamily="@font/pixeboy_z8xgd"
             android:paddingRight="25dp"
             android:text="0"
+            android:shadowColor = "#000"
+            android:shadowDx = "-5"
+            android:shadowDy = "-5"
+            android:shadowRadius = "5"
             android:textSize="34sp" />
 
         <TextView
@@ -56,6 +68,10 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/pixeboy_z8xgd"
             android:text="Moves - "
+            android:shadowColor = "#000"
+            android:shadowDx = "-5"
+            android:shadowDy = "-5"
+            android:shadowRadius = "5"
             android:textSize="34sp"
             android:textColor="@color/white"/>
 
@@ -67,6 +83,10 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/pixeboy_z8xgd"
             android:text="20"
+            android:shadowColor = "#000"
+            android:shadowDx = "-5"
+            android:shadowDy = "-5"
+            android:shadowRadius = "5"
             android:textSize="34sp" />
 
     </LinearLayout>
@@ -91,6 +111,10 @@
             android:textSize="25dp"
             android:layout_margin="10dp"
             android:backgroundTint="#DCC500"
+            android:shadowColor = "#000"
+            android:shadowDx = "-5"
+            android:shadowDy = "-5"
+            android:shadowRadius = "5"
             android:text="Reset" />
 
         <Button
@@ -100,7 +124,11 @@
             android:layout_width="125dp"
             android:layout_height="50dp"
             android:layout_margin="10dp"
-            android:text="Exit"
+            android:text="Menu"
+            android:shadowColor = "#000"
+            android:shadowDx = "-5"
+            android:shadowDy = "-5"
+            android:shadowRadius = "5"
             app:backgroundTint="#AE2727"/>
 
     </LinearLayout>
