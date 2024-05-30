@@ -38,6 +38,8 @@ public class Level1 extends AppCompatActivity {
     Button btnExit, btnContinue, btnExit2, btnLeaderboard, btnExitGame, reset;
     Dialog dialog, scoreDialog;
     FirebaseFirestore firestore;
+    FirebaseAuth auth;
+    String currUser;
 
 
     int[] tiles = {
@@ -82,6 +84,9 @@ public class Level1 extends AppCompatActivity {
         pop = MediaPlayer.create(Level1.this,R.raw.matchpop);
         pop.setLooping(false);
 
+        firestore = FirebaseFirestore.getInstance();
+        auth = FirebaseAuth.getInstance();
+        currUser = auth.getCurrentUser().getUid();
 
         dialog = new Dialog(Level1.this);
         dialog.setContentView(R.layout.confirm_dialog);
@@ -613,12 +618,13 @@ public class Level1 extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 scoreDialog.dismiss();
-                findViewById(R.id.background_overlay).setVisibility(View.VISIBLE);
-                LeaderboardFragment leaderboardFragment = new LeaderboardFragment();
+                String currentLevel = "level1";
+                LeaderboardFragment leaderboardFragment = LeaderboardFragment.newInstance(currentLevel);
                 FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
                 transaction.add(android.R.id.content, leaderboardFragment).addToBackStack(null).commit();
             }
         });
+
 
         btnExit.setOnClickListener(view->{
             insertScore();
@@ -633,17 +639,14 @@ public class Level1 extends AppCompatActivity {
 
     }
     private void insertScore(){
-        firestore = FirebaseFirestore.getInstance();
-        String currUser = FirebaseAuth.getInstance().getUid();
-
-        DocumentReference docref = firestore.collection("users").document(currUser).collection("highestScores").document("level1");
+        DocumentReference docref = firestore.collection("leaderboard").document(currUser);
         docref.get().addOnSuccessListener(documentSnapshot -> {
             if (documentSnapshot.exists()) {
-                int highestScore = documentSnapshot.getLong("highestScore").intValue();
+                int highestScore = documentSnapshot.getLong("level1").intValue();
                 Log.d("TAG", "Highest score retrieved successfully: " + highestScore);
 
                 if(score > highestScore) {
-                    docref.update("highestScore", score).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    docref.update("level1", score).addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void unused) {
                             Log.d("TAG", "Highest score updated successfully");
@@ -663,6 +666,7 @@ public class Level1 extends AppCompatActivity {
             Log.e("TAG", "Error retrieving highest score", e);
         });
     }
+
     private void checkWinCondition() {
         if (score >= 50 && !hasWon) {
             dialog.show();

@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -33,6 +34,8 @@ import java.util.Random;
 
 public class Level3 extends AppCompatActivity {
     FirebaseFirestore firestore;
+    FirebaseAuth auth;
+    String currUser;
     TextView tvMoves;
 
     Thread repeatThread;
@@ -65,7 +68,7 @@ public class Level3 extends AppCompatActivity {
     Handler mHandler;
     int interval = 300;
     Button btnReset3;
-    Button btnExit, btnContinue, btnExit2, btnExitGame3;
+    Button btnExit, btnContinue, btnExit2, btnLeaderboard, btnExitGame3;
     Dialog dialog, scoreDialog;
     TextView scoreRes, finalScore;
     int score = 0;
@@ -89,6 +92,10 @@ public class Level3 extends AppCompatActivity {
         music3.start();
         pop = MediaPlayer.create(Level3.this,R.raw.matchpop);
 
+        firestore = FirebaseFirestore.getInstance();
+        auth = FirebaseAuth.getInstance();
+        currUser = auth.getCurrentUser().getUid();
+
         dialog = new Dialog(Level3.this);
         dialog.setContentView(R.layout.confirm_dialog);
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -102,6 +109,7 @@ public class Level3 extends AppCompatActivity {
         btnExit = dialog.findViewById(R.id.btnExit);
         btnContinue = dialog.findViewById(R.id.btnContinue);
         btnExit2 = scoreDialog.findViewById(R.id.btnExit2);
+        btnLeaderboard = scoreDialog.findViewById(R.id.btnLeaderboard);
         finalScore = scoreDialog.findViewById(R.id.tvScore);
         btnExitGame3 = findViewById(R.id.btnExitGame3);
 
@@ -604,6 +612,18 @@ public class Level3 extends AppCompatActivity {
             music3.stop();
             startActivity(new Intent(Level3.this, SelectLvlActivity.class));
         });
+
+        btnLeaderboard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                scoreDialog.dismiss();
+                String currentLevel = "level1";
+                LeaderboardFragment leaderboardFragment = LeaderboardFragment.newInstance(currentLevel);
+                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                transaction.add(android.R.id.content, leaderboardFragment).addToBackStack(null).commit();
+            }
+        });
+
         btnExit.setOnClickListener(view->{
             insertScore();
             finish();
@@ -617,18 +637,14 @@ public class Level3 extends AppCompatActivity {
     }
 
     private void insertScore(){
-
-        firestore = FirebaseFirestore.getInstance();
-        String currUser = FirebaseAuth.getInstance().getUid();
-
-        DocumentReference docref = firestore.collection("users").document(currUser).collection("highestScores").document("level3");
+        DocumentReference docref = firestore.collection("leaderboard").document(currUser);
         docref.get().addOnSuccessListener(documentSnapshot -> {
             if (documentSnapshot.exists()) {
-                int highestScore = documentSnapshot.getLong("highestScore").intValue();
+                int highestScore = documentSnapshot.getLong("level1").intValue();
                 Log.d("TAG", "Highest score retrieved successfully: " + highestScore);
 
-                if (score > highestScore) {
-                    firestore.collection("users").document(currUser).update("highestScore", score).addOnSuccessListener(new OnSuccessListener<Void>() {
+                if(score > highestScore) {
+                    docref.update("level1", score).addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void unused) {
                             Log.d("TAG", "Highest score updated successfully");
@@ -648,4 +664,5 @@ public class Level3 extends AppCompatActivity {
             Log.e("TAG", "Error retrieving highest score", e);
         });
     }
+
 }

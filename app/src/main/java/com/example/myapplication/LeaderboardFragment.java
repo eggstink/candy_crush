@@ -19,7 +19,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,10 +34,25 @@ public class LeaderboardFragment extends Fragment {
     private RecyclerView recyclerView;
     private LeaderboardAdapter adapter;
     private FirebaseFirestore firestore;
+    private String level;
+
+    // Static method to create a new instance of LeaderboardFragment with parameters
+    public static LeaderboardFragment newInstance(String level) {
+        LeaderboardFragment fragment = new LeaderboardFragment();
+        Bundle args = new Bundle();
+        args.putString("level", level);
+        fragment.setArguments(args);
+        return fragment;
+    }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_leaderboard, container, false);
+
+        // Retrieve level parameter from arguments
+        if (getArguments() != null) {
+            level = getArguments().getString("level");
+        }
 
         recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -50,16 +64,30 @@ public class LeaderboardFragment extends Fragment {
     }
 
     private void loadLeaderboardData() {
-        firestore.collection("users")
-                .orderBy("highestScore", Query.Direction.DESCENDING)
+        if (level == null) {
+            Toast.makeText(getContext(), "Level parameter is missing", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        firestore.collection("leaderboard")
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         List<User> userList = new ArrayList<>();
-                        for (DocumentSnapshot doc : task.getResult()) {
-                            String username = doc.getString("username");
-                            long highestScore = doc.getLong("highestScore");
-                            userList.add(new User(username, highestScore));
+                        for (DocumentSnapshot userDoc : task.getResult()) {
+                            String userId = userDoc.getId();
+                            long highestScore = userDoc.getLong(level);
+                            // Retrieve username from the users collection
+                            firestore.collection("users")
+                                    .document(userId)
+                                    .get()
+                                    .addOnSuccessListener(documentSnapshot -> {
+                                        if (documentSnapshot.exists()) {
+                                            String username = documentSnapshot.getString("username");
+                                            userList.add(new User(username, highestScore));
+                                            adapter.notifyDataSetChanged();
+                                        }
+                                    });
                         }
                         adapter = new LeaderboardAdapter(userList);
                         recyclerView.setAdapter(adapter);
@@ -68,6 +96,27 @@ public class LeaderboardFragment extends Fragment {
                     }
                 });
     }
+
+
+//    private void loadLeaderboardData() {
+//        firestore.collection("users")
+//                .orderBy("highestScore", Query.Direction.DESCENDING)
+//                .get()
+//                .addOnCompleteListener(task -> {
+//                    if (task.isSuccessful()) {
+//                        List<User> userList = new ArrayList<>();
+//                        for (DocumentSnapshot doc : task.getResult()) {
+//                            String username = doc.getString("username");
+//                            long highestScore = doc.getLong("highestScore");
+//                            userList.add(new User(username, highestScore));
+//                        }
+//                        adapter = new LeaderboardAdapter(userList);
+//                        recyclerView.setAdapter(adapter);
+//                    } else {
+//                        Toast.makeText(getContext(), "Failed to load leaderboard", Toast.LENGTH_SHORT).show();
+//                    }
+//                });
+//    }
 
     private static class LeaderboardAdapter extends RecyclerView.Adapter<LeaderboardAdapter.ViewHolder> {
         private final List<User> userList;

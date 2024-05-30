@@ -23,6 +23,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.WriteBatch;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -111,7 +112,8 @@ public class RegisterActivity extends AppCompatActivity {
                     if (task.isSuccessful()) {
                         Toast.makeText(RegisterActivity.this, "Account registered successfully!", Toast.LENGTH_SHORT).show();
                         userId = auth.getCurrentUser().getUid();
-                        DocumentReference docref = firestore.collection("users").document(userId);
+                        DocumentReference userDocRef = firestore.collection("users").document(userId);
+                        DocumentReference leaderboardDocRef = firestore.collection("leaderboard").document(userId);
 
                         int initialScore = 0;
 
@@ -121,12 +123,21 @@ public class RegisterActivity extends AppCompatActivity {
                         user.put("lastName", lastname);
                         user.put("highestScore", initialScore);
 
-                        docref.set(user)
+                        Map<String, Object> leaderboardData = new HashMap<>();
+                        leaderboardData.put("level1", initialScore);
+                        leaderboardData.put("level2", initialScore);
+                        leaderboardData.put("level3", initialScore);
+
+                        // Perform batched write to set data in both collections
+                        WriteBatch batch = firestore.batch();
+                        batch.set(userDocRef, user);
+                        batch.set(leaderboardDocRef, leaderboardData);
+
+                        batch.commit()
                                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
                                     public void onSuccess(Void aVoid) {
                                         Log.d("TAG", "onSuccess: user profile is created for " + userId);
-
                                         Intent registeredIntent = new Intent(RegisterActivity.this, LogInActivity.class);
                                         startActivity(registeredIntent);
                                     }
@@ -141,6 +152,7 @@ public class RegisterActivity extends AppCompatActivity {
                         Toast.makeText(RegisterActivity.this, "Authentication failed. Please try again.", Toast.LENGTH_SHORT).show();
                     }
                 });
+
             }
         });
 
