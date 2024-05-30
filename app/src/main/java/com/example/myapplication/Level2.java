@@ -619,9 +619,9 @@ public class Level2 extends AppCompatActivity {
             @Override
             public void run() {
                 moveDownTiles();
-                if (swiped) {
+
                     hasMatches();
-                }
+
                 mHandler.postDelayed(this, interval);
             }
         });
