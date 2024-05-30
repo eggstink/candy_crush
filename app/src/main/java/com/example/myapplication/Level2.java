@@ -17,19 +17,18 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 public class Level2 extends AppCompatActivity {
@@ -40,6 +39,7 @@ public class Level2 extends AppCompatActivity {
     FirebaseFirestore firestore;
     FirebaseAuth auth;
     String currUser;
+    String currLevel;
 
     int[] tiles = {
             R.drawable.fries,
@@ -88,6 +88,7 @@ public class Level2 extends AppCompatActivity {
         firestore = FirebaseFirestore.getInstance();
         auth = FirebaseAuth.getInstance();
         currUser = auth.getCurrentUser().getUid();
+        currLevel = "level2";
 
         tvMoves = findViewById(R.id.moves2);
         scoreRes = findViewById(R.id.score2);
@@ -626,7 +627,6 @@ public class Level2 extends AppCompatActivity {
         });
     }
     private void endCheckers(){
-
         btnExit2.setOnClickListener(view->{
             insertScore();
             finish();
@@ -637,6 +637,7 @@ public class Level2 extends AppCompatActivity {
         btnLeaderboard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                insertScore();
                 scoreDialog.dismiss();
                 String currentLevel = "level2";
                 LeaderboardFragment leaderboardFragment = LeaderboardFragment.newInstance(currentLevel);
@@ -653,37 +654,33 @@ public class Level2 extends AppCompatActivity {
         });
 
         btnContinue.setOnClickListener(view->{
+            insertScore();
             hasWon = true;
             dialog.dismiss();
         });
     }
-    private void insertScore(){
-        DocumentReference docref = firestore.collection("leaderboard").document(currUser);
-        docref.get().addOnSuccessListener(documentSnapshot -> {
-            if (documentSnapshot.exists()) {
-                int highestScore = documentSnapshot.getLong("level1").intValue();
-                Log.d("TAG", "Highest score retrieved successfully: " + highestScore);
 
-                if(score > highestScore) {
-                    docref.update("level1", score).addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void unused) {
-                            Log.d("TAG", "Highest score updated successfully");
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Log.e("TAG", "Error updating highest score", e);
-                        }
-                    });
+    private void insertScore() {
+        DocumentReference docRef = firestore.collection("leaderboard").document(currUser);
+        docRef.get().addOnSuccessListener(documentSnapshot -> {
+            if (documentSnapshot.exists()) {
+                int currentScore = score;
+                int highestScore = documentSnapshot.getLong(currLevel) != null ? documentSnapshot.getLong(currLevel).intValue() : 0;
+
+                if (currentScore > highestScore) {
+                    docRef.update(currLevel, currentScore)
+                            .addOnSuccessListener(aVoid -> Log.d("TAG", "Highest score updated successfully"))
+                            .addOnFailureListener(e -> Log.e("TAG", "Error updating highest score", e));
                 }
             } else {
-                Log.d("TAG", "User document does not exist");
+                Map<String, Object> userData = new HashMap<>();
+                userData.put(currLevel, score);
+
+                docRef.set(userData)
+                        .addOnSuccessListener(aVoid -> Log.d("TAG", "New user document created with score"))
+                        .addOnFailureListener(e -> Log.e("TAG", "Error creating new user document", e));
             }
-        })
-        .addOnFailureListener(e -> {
-            Log.e("TAG", "Error retrieving highest score", e);
-        });
+        }).addOnFailureListener(e -> Log.e("TAG", "Error retrieving user document", e));
     }
 
     private void checkWinCondition() {

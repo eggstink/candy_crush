@@ -36,7 +36,6 @@ public class LeaderboardFragment extends Fragment {
     private FirebaseFirestore firestore;
     private String level;
 
-    // Static method to create a new instance of LeaderboardFragment with parameters
     public static LeaderboardFragment newInstance(String level) {
         LeaderboardFragment fragment = new LeaderboardFragment();
         Bundle args = new Bundle();
@@ -49,7 +48,6 @@ public class LeaderboardFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_leaderboard, container, false);
 
-        // Retrieve level parameter from arguments
         if (getArguments() != null) {
             level = getArguments().getString("level");
         }
@@ -77,7 +75,6 @@ public class LeaderboardFragment extends Fragment {
                         for (DocumentSnapshot userDoc : task.getResult()) {
                             String userId = userDoc.getId();
                             long highestScore = userDoc.getLong(level);
-                            // Retrieve username from the users collection
                             firestore.collection("users")
                                     .document(userId)
                                     .get()
