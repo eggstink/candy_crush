@@ -38,8 +38,14 @@ public class Level2 extends AppCompatActivity {
     Dialog dialog, scoreDialog;
     FirebaseFirestore firestore;
     int[] tiles = {
-            R.drawable.diamond, R.drawable.gold, R.drawable.iron, R.drawable.lapis, R.drawable.netherite, R.drawable.redstone
+            R.drawable.fries,
+            R.drawable.cola,
+            R.drawable.cocktail,
+            R.drawable.hotdog,
+            R.drawable.donut,
+            R.drawable.lollipop
     };
+
     int maxNumOfMoves = 50, widthOfBlock, noOfBlocks = 8, widthOfScreen, heightofScreen;
     ArrayList<ImageView> tile = new ArrayList<>();
     boolean[][] crossPattern = {
@@ -279,7 +285,7 @@ public class Level2 extends AppCompatActivity {
 
                 Toast.makeText(this, "Invalid move! Please make a valid move.", Toast.LENGTH_SHORT).show();
             } else {
-                tvMoves.setText("" + maxNumOfMoves--);
+                tvMoves.setText(" " + maxNumOfMoves--);
                 if (maxNumOfMoves <= 0 && score < 80) {
                     Toast.makeText(this, "No more moves left!", Toast.LENGTH_SHORT).show();
                 }
