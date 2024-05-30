@@ -167,6 +167,7 @@ public class Level1 extends AppCompatActivity {
             });
         }
         btnExitGame.setOnClickListener(view->{
+            insertScore();
             finalScore.setText(String.valueOf(score));
             scoreDialog.show();
             endCheckers();
@@ -174,6 +175,7 @@ public class Level1 extends AppCompatActivity {
         reset.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                insertScore();
                 Intent intent = new Intent(Level1.this, Level1.class);
                 music.stop();
                 finish();
@@ -619,7 +621,7 @@ public class Level1 extends AppCompatActivity {
             public void onClick(View v) {
                 insertScore();
                 scoreDialog.dismiss();
-                String currentLevel = "level";
+                String currentLevel = "level1";
                 LeaderboardFragment leaderboardFragment = LeaderboardFragment.newInstance(currentLevel);
                 FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
                 transaction.add(android.R.id.content, leaderboardFragment).addToBackStack(null).commit();
@@ -666,6 +668,7 @@ public class Level1 extends AppCompatActivity {
 
     private void checkWinCondition() {
         if (score >= 50 && !hasWon) {
+            insertScore();
             dialog.show();
             endCheckers();
         }

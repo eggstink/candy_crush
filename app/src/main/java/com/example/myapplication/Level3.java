@@ -173,6 +173,7 @@ public class Level3 extends AppCompatActivity {
         }
 
         btnExitGame3.setOnClickListener(view->{
+            insertScore();
             finalScore.setText(String.valueOf(score));
             scoreDialog.show();
             endCheckers();
@@ -181,6 +182,7 @@ public class Level3 extends AppCompatActivity {
         btnReset3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                insertScore();
                 music3.stop();
                 Intent intent = new Intent(Level3.this, Level3.class);
                 finish();
@@ -602,6 +604,7 @@ public class Level3 extends AppCompatActivity {
 
     private void checkWinCondition() {
         if (score >= 10 && !hasWon) {
+            insertScore();
             dialog.show();
             endCheckers();
         }
@@ -617,8 +620,8 @@ public class Level3 extends AppCompatActivity {
         btnLeaderboard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                insertScore();
                 scoreDialog.dismiss();
+                insertScore();
                 String currentLevel = "level3";
                 LeaderboardFragment leaderboardFragment = LeaderboardFragment.newInstance(currentLevel);
                 FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();

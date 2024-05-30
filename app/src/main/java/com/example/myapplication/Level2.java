@@ -178,6 +178,7 @@ public class Level2 extends AppCompatActivity {
         btnReset.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                insertScore();
                 music2.stop();
                 Intent intent = new Intent(Level2.this, Level2.class);
                 finish();
@@ -685,6 +686,7 @@ public class Level2 extends AppCompatActivity {
 
     private void checkWinCondition() {
         if (score >= 80 && !hasWon) {
+            insertScore();
             dialog.show();
             endCheckers();
         }

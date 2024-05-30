@@ -35,6 +35,7 @@ public class LeaderboardFragment extends Fragment {
     private LeaderboardAdapter adapter;
     private FirebaseFirestore firestore;
     private String level;
+    TextView levelNum;
 
     public static LeaderboardFragment newInstance(String level) {
         LeaderboardFragment fragment = new LeaderboardFragment();
@@ -54,6 +55,9 @@ public class LeaderboardFragment extends Fragment {
 
         recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        levelNum = view.findViewById(R.id.levelNum);
+        levelNum.setText(String.format("Level %s", level.replaceAll("\\D+", "")));
 
         firestore = FirebaseFirestore.getInstance();
         loadLeaderboardData();
@@ -94,26 +98,6 @@ public class LeaderboardFragment extends Fragment {
                 });
     }
 
-
-//    private void loadLeaderboardData() {
-//        firestore.collection("users")
-//                .orderBy("highestScore", Query.Direction.DESCENDING)
-//                .get()
-//                .addOnCompleteListener(task -> {
-//                    if (task.isSuccessful()) {
-//                        List<User> userList = new ArrayList<>();
-//                        for (DocumentSnapshot doc : task.getResult()) {
-//                            String username = doc.getString("username");
-//                            long highestScore = doc.getLong("highestScore");
-//                            userList.add(new User(username, highestScore));
-//                        }
-//                        adapter = new LeaderboardAdapter(userList);
-//                        recyclerView.setAdapter(adapter);
-//                    } else {
-//                        Toast.makeText(getContext(), "Failed to load leaderboard", Toast.LENGTH_SHORT).show();
-//                    }
-//                });
-//    }
 
     private static class LeaderboardAdapter extends RecyclerView.Adapter<LeaderboardAdapter.ViewHolder> {
         private final List<User> userList;
