@@ -7,10 +7,12 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:layout_gravity="center"
+    android:background="@drawable/lvl2bg"
     tools:context=".Level2"
     >
 
     <TextView
+        android:textColor="@color/white"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
@@ -31,6 +33,7 @@
         android:padding="20dp">
 
         <TextView
+            android:textColor="@color/white"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/pixeboy_z8xgd"
@@ -38,6 +41,7 @@
             android:textSize="34sp" />
 
         <TextView
+            android:textColor="@color/white"
             android:id="@+id/score2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -47,6 +51,7 @@
             android:textSize="34sp" />
 
         <TextView
+            android:textColor="@color/white"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/pixeboy_z8xgd"
@@ -54,6 +59,7 @@
             android:textSize="34sp" />
 
         <TextView
+            android:textColor="@color/white"
             android:id="@+id/moves2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -66,7 +72,7 @@
         android:id="@+id/board2"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#6C3939"
+
         android:orientation="horizontal" />
 
     <LinearLayout

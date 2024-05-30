@@ -28,7 +28,7 @@
             android:fontFamily="@font/pixeboy_z8xgd"
             android:gravity="center"
             android:text="Pixel"
-            android:textColor="@color/black"
+            android:textColor="@color/white"
             android:textSize="64dp" />
 
         <TextView
@@ -38,7 +38,7 @@
             android:fontFamily="@font/pixeboy_z8xgd"
             android:gravity="center"
             android:text="Crush"
-            android:textColor="@color/black"
+            android:textColor="@color/white"
             android:textSize="32dp" />
     </LinearLayout>
 
