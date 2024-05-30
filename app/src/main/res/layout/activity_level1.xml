@@ -5,6 +5,7 @@
     android:id="@+id/level1Layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/lvl1activitybg"
     android:orientation="vertical"
     android:layout_gravity="center"
     tools:context=".Level1"
@@ -15,6 +16,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="5dp"
+        android:textColor="@color/white"
         android:fontFamily="@font/pixeboy_z8xgd"
         android:gravity="center_horizontal"
         android:text="Target: 50"
@@ -35,9 +37,12 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/pixeboy_z8xgd"
             android:text="Score - "
-            android:textSize="34sp" />
+            android:textSize="34sp"
+            android:textColor="@color/white"/>
+
 
         <TextView
+            android:textColor="@color/white"
             android:id="@+id/score"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -51,9 +56,12 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/pixeboy_z8xgd"
             android:text="Moves - "
-            android:textSize="34sp" />
+            android:textSize="34sp"
+            android:textColor="@color/white"/>
+
 
         <TextView
+            android:textColor="@color/white"
             android:id="@+id/moves"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -66,7 +74,7 @@
         android:id="@+id/board"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#6C3939"
+
         android:orientation="horizontal" />
 
     <LinearLayout
