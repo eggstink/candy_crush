@@ -1,5 +1,6 @@
 package com.example.myapplication;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -7,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,6 +38,7 @@ public class LeaderboardFragment extends Fragment {
     private FirebaseFirestore firestore;
     private String level;
     TextView levelNum;
+    ImageButton btnClose;
 
     public static LeaderboardFragment newInstance(String level) {
         LeaderboardFragment fragment = new LeaderboardFragment();
@@ -58,6 +61,15 @@ public class LeaderboardFragment extends Fragment {
 
         levelNum = view.findViewById(R.id.levelNum);
         levelNum.setText(String.format("Level %s", level.replaceAll("\\D+", "")));
+
+        btnClose = view.findViewById(R.id.closeLeaderboard);
+        btnClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getContext(), SelectLvlActivity.class));
+            }
+        });
+
 
         firestore = FirebaseFirestore.getInstance();
         loadLeaderboardData();
