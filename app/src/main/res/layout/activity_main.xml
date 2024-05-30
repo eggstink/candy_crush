@@ -24,6 +24,7 @@
             android:id="@+id/btnLogin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/pixeboy_z8xgd"
             android:onClick="login"
             android:text="Login"
             android:visibility="visible" />
@@ -32,6 +33,7 @@
             android:id="@+id/btnRegister"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/pixeboy_z8xgd"
             android:onClick="register"
             android:text="Register"
             android:visibility="visible" />
@@ -40,6 +42,7 @@
             android:id="@+id/btnStart"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/pixeboy_z8xgd"
             android:onClick="startGame"
             android:text="Start"
             android:visibility="gone" />
@@ -48,6 +51,7 @@
             android:id="@+id/btnLogout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/pixeboy_z8xgd"
             android:onClick="logout"
             android:text="Logout"
             android:visibility="gone" />

@@ -62,8 +62,11 @@ public class MainActivity extends AppCompatActivity {
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 Intent intentLogIn = new Intent(MainActivity.this, LogInActivity.class);
                 startActivity(intentLogIn);
+                videoView.stopPlayback();
+                music.stop();
                 finish();
             }
         });
@@ -73,6 +76,8 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent1 = new Intent(MainActivity.this, RegisterActivity.class);
                 startActivity(intent1);
+                music.stop();
+                videoView.stopPlayback();
             }
         });
 
@@ -82,6 +87,8 @@ public class MainActivity extends AppCompatActivity {
                 music.stop();
                 Intent intent1 = new Intent(MainActivity.this, SelectLvlActivity.class);
                 forward.start();
+                music.stop();
+                videoView.stopPlayback();
                 startActivity(intent1);
             }
         });
@@ -97,6 +104,7 @@ public class MainActivity extends AppCompatActivity {
                 editor.apply();
 
                 Intent intentSplash = new Intent(MainActivity.this, SplashScreen.class);
+                videoView.stopPlayback();
                 startActivity(intentSplash);
             }
         });

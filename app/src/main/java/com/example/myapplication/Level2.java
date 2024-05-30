@@ -292,7 +292,7 @@ public class Level2 extends AppCompatActivity {
                         tile.get(tileToBeDragged).setTag(background1);
                         tile.get(tileToBeReplaced).setTag(background);
                     }
-                }, 500);
+                }, 300);
 
                 swiped = false;
 

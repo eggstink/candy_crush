@@ -544,7 +544,7 @@ public class Level1 extends AppCompatActivity {
                     tile.get(tileToBeDraged).setTag(background1);
                     tile.get(tileToBeReplaced).setTag(background);
                 }
-            }, 500);
+            }, 300);
 
             swiped = false;
 

@@ -82,14 +82,20 @@
         android:gravity="center_horizontal">
 
         <Button
+            android:fontFamily="@font/pixeboy_z8xgd"
             android:id="@+id/reset2"
             android:layout_width="125dp"
             android:layout_height="50dp"
+            android:textSize="25dp"
             android:layout_margin="10dp"
+            android:backgroundTint="#DCC500"
             android:text="Reset" />
 
         <Button
+            android:fontFamily="@font/pixeboy_z8xgd"
             android:id="@+id/btnExitGame2"
+            android:textSize="25dp"
+            app:backgroundTint="#AE2727"
             android:layout_width="125dp"
             android:layout_height="50dp"
             android:layout_margin="10dp"
