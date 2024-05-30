@@ -40,12 +40,12 @@ public class Level3 extends AppCompatActivity {
 
     Thread repeatThread;
     int[] tiles = {
-            R.drawable.diamond,
-            R.drawable.gold,
-            R.drawable.iron,
-            R.drawable.lapis,
-            R.drawable.netherite,
-            R.drawable.redstone,
+            R.drawable.fries,
+            R.drawable.cola,
+            R.drawable.cocktail,
+            R.drawable.hotdog,
+            R.drawable.donut,
+            R.drawable.lollipop
     };
 
     int maxNumOfMoves = 10;
