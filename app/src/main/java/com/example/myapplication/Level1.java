@@ -42,12 +42,12 @@ public class Level1 extends AppCompatActivity {
 
 
     int[] tiles = {
-            R.drawable.fries,
-            R.drawable.cola,
-            R.drawable.cocktail,
-            R.drawable.hotdog,
-            R.drawable.donut,
-            R.drawable.lollipop
+            R.drawable.planet1,
+            R.drawable.planet2,
+            R.drawable.planet3,
+            R.drawable.planet4,
+            R.drawable.planet5,
+            R.drawable.planet6
     };
 
 

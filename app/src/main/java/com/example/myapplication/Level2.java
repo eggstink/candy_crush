@@ -42,13 +42,14 @@ public class Level2 extends AppCompatActivity {
     String currLevel;
 
     int[] tiles = {
-            R.drawable.fries,
-            R.drawable.cola,
-            R.drawable.cocktail,
-            R.drawable.hotdog,
-            R.drawable.donut,
-            R.drawable.lollipop
+            R.drawable.planet1,
+            R.drawable.planet2,
+            R.drawable.planet3,
+            R.drawable.planet4,
+            R.drawable.planet5,
+            R.drawable.planet6
     };
+
 
     int maxNumOfMoves = 50, widthOfBlock, noOfBlocks = 8, widthOfScreen, heightofScreen;
     ArrayList<ImageView> tile = new ArrayList<>();

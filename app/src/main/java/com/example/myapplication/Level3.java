@@ -40,13 +40,14 @@ public class Level3 extends AppCompatActivity {
 
     Thread repeatThread;
     int[] tiles = {
-            R.drawable.fries,
-            R.drawable.cola,
-            R.drawable.cocktail,
-            R.drawable.hotdog,
-            R.drawable.donut,
-            R.drawable.lollipop
+            R.drawable.planet1,
+            R.drawable.planet2,
+            R.drawable.planet3,
+            R.drawable.planet4,
+            R.drawable.planet5,
+            R.drawable.planet6
     };
+
 
     int maxNumOfMoves = 10;
     int widthOfBlock, noOfBlocks = 11, widthOfScreen, heightofScreen;
